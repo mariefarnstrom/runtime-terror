@@ -1,0 +1,1 @@
+// Room, Scare, Player, GameState types

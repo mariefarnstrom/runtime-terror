@@ -1,0 +1,1 @@
+//Hook for managing ambient sound in the game

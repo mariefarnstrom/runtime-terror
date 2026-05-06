@@ -12,7 +12,7 @@ export default function Home() {
 
       {/* Content — top layer */}
       <div className="relative z-10 flex flex-col w-full items-center">
-        <h1 className="text-red-800 text-5xl ">Runtime terror</h1>
+        <h1 className="text-red-800 text-5xl leading-normal">Runtime terror</h1>
         <EnterForm />
       </div>
     </div>

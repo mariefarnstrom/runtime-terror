@@ -1,5 +1,6 @@
 import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
+import Bats from "@/components/effects/Bats";
 
 export default function Home() {
   return (
@@ -9,6 +10,8 @@ export default function Home() {
 
       {/* Fog — above background */}
       <Fog />
+
+      <Bats />
 
       {/* Content — top layer */}
       <div className="relative z-10 flex flex-col w-full items-center">

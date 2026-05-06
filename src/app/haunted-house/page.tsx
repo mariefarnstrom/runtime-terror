@@ -2,8 +2,11 @@
 "use client";
 
 import { useGameStore } from "@/store/useGameStore";
-import Graveyard from "@/components/rooms/room1/Room1Scene";
-import Dolls from "@/components/rooms/room2/Room2Scene";
+import Graveyard from "@/components/rooms/room1/Graveyard";
+import Dolls from "@/components/rooms/room2/Dolls";
+import Spiders from "@/components/rooms/room3/Spiders";
+import Clown from "@/components/rooms/room4/Clown";
+
 /* export default function HuntedHouse() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -16,7 +19,7 @@ import Dolls from "@/components/rooms/room2/Room2Scene";
 export default function HauntedHousePage() {
   const { currentRoomIndex, goToNextRoom } = useGameStore();
 
-  const rooms = [Graveyard, Dolls /* Heights, Clown */];
+  const rooms = [Graveyard, Dolls, Spiders, Clown];
   const CurrentRoom = rooms[currentRoomIndex];
 
   return <CurrentRoom />;

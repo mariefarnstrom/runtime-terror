@@ -38,39 +38,76 @@ export default function Bats() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <Bat
         src="/assets/images/bat-with-raised-wings-svgrepo-com.svg"
-        startX="65%"
-        startY="20%"
-        animateX={["-20%", "25%", "-20%"]}
-        animateY={["0%", "-15%", "0%"]}
-        duration={5}
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={12}
+        size={24}
+      />
+      {/* Starts left of screen, flies across to right */}
+      <Bat
+        src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={10}
         size={24}
       />
       <Bat
-        src="/assets/images/bat-svgrepo-com (1).svg"
-        startX="70%"
-        startY="25%"
-        animateX={["10%", "-25%", "10%"]}
-        animateY={["-10%", "15%", "-10%"]}
-        duration={4}
-        size={18}
-      />
-      <Bat
         src="/assets/images/bat-svgrepo-com.svg"
-        startX="75%"
-        startY="18%"
-        animateX={["-15%", "20%", "-15%"]}
-        animateY={["5%", "-20%", "5%"]}
-        duration={6}
-        size={20}
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={9}
+        size={24}
       />
       <Bat
         src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
-        startX="68%"
-        startY="28%"
-        animateX={["15%", "-20%", "15%"]}
-        animateY={["-8%", "12%", "-8%"]}
-        duration={4.5}
-        size={22}
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={11}
+        size={24}
+      />
+      <Bat
+        src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={9}
+        size={24}
+      />
+      <Bat
+        src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={11}
+        size={24}
+      />
+      <Bat
+        src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={8}
+        size={24}
+      />
+      <Bat
+        src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg"
+        startX="0%"
+        startY="0%"
+        animateX={["-200px", "110vw", "-200px"]}
+        animateY={["500px", "-100px", "500px"]}
+        duration={12}
+        size={24}
       />
     </div>
   );

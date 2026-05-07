@@ -1,3 +1,5 @@
+'use client'
+
 import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import { ApiError } from "@/types/errors";
@@ -6,7 +8,7 @@ import { PaymentResponse } from "@/types/index";
 import { useState } from "react";
 
 export default function Home() {
-    const [error, setError] = useState<ApiError | null>(null)
+  const [error, setError] = useState<ApiError | null>(null)
 
   const handlePayment = async () => {
     setError(null)
@@ -40,7 +42,7 @@ export default function Home() {
       {/* Content — top layer */}
       <div className="relative z-10 flex flex-col w-full items-center">
         <h1 className="text-red-800 text-5xl leading-normal">Runtime terror</h1>
-        <EnterForm />
+        <EnterForm onSubmit={handlePayment} />
       </div>
     </div>
   );

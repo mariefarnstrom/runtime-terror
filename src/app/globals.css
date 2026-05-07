@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --font-eater: "Eater", cursive;
+  --font-glitch: "RubikGlitch", cursive;
+  --font-fell: "IMFellEnglish", serif;
+}
+
 @font-face {
   font-family: "Charu Chandan BloodDrip";
   src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf")
@@ -7,7 +13,9 @@
 }
 
 :root {
-  --h1-font: "Charu Chandan BloodDrip";
+  --h1-font: "Eater";
+  --h2-font: "Rubrik glitch";
+  --h3-font: "IM Fell english";
 }
 
 body {

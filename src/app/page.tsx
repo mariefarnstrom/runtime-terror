@@ -40,9 +40,12 @@ export default function Home() {
       <Fog />
 
       {/* Content — top layer */}
-      <div className="relative z-10 flex flex-col w-full items-center">
+      <div className="relative z-10 flex flex-col gap-6 w-full h-full items-center">
         <h1 className="text-red-800 text-5xl leading-normal">Runtime terror</h1>
-        <EnterForm onSubmit={handlePayment} />
+        <div className="w-80vw max-w-80 justify-end">
+          <EnterForm onSubmit={handlePayment} />
+          {error && <p className="text-red-500 mt-4">Error: {error.message}</p>}
+        </div>
       </div>
     </div>
   );

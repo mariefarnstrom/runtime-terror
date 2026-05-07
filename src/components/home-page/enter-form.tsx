@@ -13,7 +13,7 @@ export default function EnterForm({ onSubmit }: EnterFormProps) {
         const name = formData.get("name") as string;
         onSubmit(name);
       }}
-      className="bg-gray-500 bg-opacity-50 p-6 rounded shadow-md flex flex-col items-center"
+      className="bg-gray-500 bg-opacity-50 p-6 rounded shadow-md flex flex-col items-center w-full"
     >
       <label htmlFor="name"
       className="text-lg"

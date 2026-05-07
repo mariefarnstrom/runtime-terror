@@ -1,31 +1,32 @@
-// Payment logic, types, helper functions
+// lib/payment.ts
+import { ApiResult } from '@/lib/fetcher'
+import { Transaction, PaymentResult } from '@/types/index'
+import { parseError } from '@/lib/parseError'
 
-import { ApiError, ApiResponse, Transaction } from "../types";
+export async function processPayment(
+  payload: Transaction
+): Promise<ApiResult<PaymentResult>> {
+  try {
+    const res = await fetch('https://your-provider.com/charge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
 
-export async function createTransaction(transaction: Transaction): Promise<ApiResponse<unknown>> {
-    try {
-        const response = await fetch("/api/transaction", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ buyer: transaction.buyer, seller: transaction.seller, amount: transaction.amount }),
-        });
-        const data: unknown = await response.json();
+    const data = await res.json()
 
-        if (!response.ok) {
-            return {
-                data: null,
-                error: {
-                    message: `Transaction request failed with status ${response.status}`,
-                    status: response.status,
-                },
-            };
-        }
-
-        return { data, error: null };
-    } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : "Unknown error";
-        return { data: null, error: { message } };
+    if (!res.ok) {
+      return {
+        success: false,
+        error: { message: data.message ?? 'Payment failed', status: res.status },
+      }
     }
+
+    return { success: true, data }
+
+  } catch (error: unknown) {
+    return { success: false, error: parseError(error) }
+  }
 }

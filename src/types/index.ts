@@ -1,14 +1,5 @@
 // Room, Scare, Player, GameState types
-
-export interface ApiError {
-    message: string;
-    status?: number;
-}
-
-export interface ApiResponse<T> {
-    data: T | null;
-    error: ApiError | null;
-}
+import { PaymentError } from "./errors";
 
 export type Transaction = {
     seller: string;
@@ -18,3 +9,15 @@ export type Transaction = {
 
 export type TransactionBuyer = Pick<Transaction, "buyer">;
 
+export type PaymentResponse = {
+  success: boolean
+  accessToken?: string
+  error?: PaymentError
+}
+
+export interface PaymentResult {
+  success: boolean
+  accessToken?: string
+  error?: string
+  declineCode?: string
+}

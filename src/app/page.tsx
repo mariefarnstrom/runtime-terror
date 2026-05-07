@@ -3,34 +3,26 @@
 import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import { ApiError } from "@/types/errors";
-import { fetcher } from "@/lib/fetcher";
-import { PaymentResponse } from "@/types/index";
 import { useState } from "react";
+import { processPayment } from "@/lib/payment";
 
 export default function Home() {
   const [error, setError] = useState<ApiError | null>(null)
 
-  const handlePayment = async () => {
+  const handlePayment = async (name: string) => {
     setError(null)
 
-    const result = await fetcher<PaymentResponse>('/api/payment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ seller: "<SELLER_ID>", buyer: "<BUYER_ID>", amount: 10 }),
+    const result = await processPayment({
+      seller: process.env.SELLER || 'default-seller',
+      buyer: name,
+      amount: 100,
     })
 
     if (!result.success) {
-      setError(result.error)
-      return
+      setError({ message: result.error?.message ?? 'Payment failed', status: result.error?.status })
     }
-
-    if (result.data.error) {
-      setError(result.data.error)
-      return
-    }
-
-    console.log('Payment successful, access token:', result.data.accessToken)
   }
+  
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Background — lowest layer */}

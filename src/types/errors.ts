@@ -8,6 +8,7 @@ export interface PaymentError extends ApiError {
     field?: string
 }
 
+// Custom application error class
 export class AppError extends Error {
   status?: number
 
@@ -18,7 +19,3 @@ export class AppError extends Error {
   }
 }
 
-export interface ApiResponse<T> {
-    data: T | null;
-    error: ApiError | null;
-}

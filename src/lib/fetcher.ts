@@ -1,4 +1,3 @@
-// lib/fetcher.ts
 import { ApiError } from '@/types/errors'
 import { parseError } from '@/lib/parseError'
 
@@ -6,6 +5,8 @@ export type ApiResult<T> =
   | { success: true; data: T }
   | { success: false; error: ApiError }
 
+
+// Generic fetcher function to handle API requests and responses so all API calls can use the same standardized format for success and error handling
 export async function fetcher<T>(
   url: string,
   options?: RequestInit

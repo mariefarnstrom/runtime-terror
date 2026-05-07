@@ -5,6 +5,7 @@ import { ApiError } from "@/types/errors";
 import { useState } from "react";
 import { processPayment } from "@/lib/payment";
 import Link from "next/link";
+import Bats from "@/components/effects/Bats";
 
 export default function Home() {
   const [error, setError] = useState<ApiError | null>(null)
@@ -32,6 +33,8 @@ export default function Home() {
 
       {/* Fog — above background */}
       <Fog />
+
+      <Bats />
 
       {/* Content — top layer */}
       <div className="relative z-10 flex flex-col gap-8 w-full h-full items-center">

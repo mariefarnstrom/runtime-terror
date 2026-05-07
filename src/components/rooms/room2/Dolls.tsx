@@ -1,15 +1,10 @@
-//Example Room scene component
+import DoorButton from "@/components/shared/Button";
 
-import { useGameStore } from "@/store/useGameStore";
-
-// I Dolls.tsx — når state direkt utan props
 export default function Dolls() {
-  const { /* increaseFear, */ goToNextRoom } = useGameStore();
 
-  const handleDoorOpen = (): void => {
-    /* increaseFear(20); */
-    goToNextRoom();
-  };
-
-  return <button onClick={handleDoorOpen}>Open the door</button>;
+  return (
+    <div className="absolute inset-0 bg-[url('/assets/images/creepy-doll.jpg')] bg-cover">
+      <DoorButton buttonText="Enter at own risk" />
+    </div>
+  );
 }

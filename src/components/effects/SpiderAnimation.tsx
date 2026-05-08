@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styles from "./SpiderAnimation.module.css";
 
 export default function SpiderAnimation() {
     const [frame, setFrame] = useState(0);
@@ -19,15 +20,15 @@ export default function SpiderAnimation() {
     const y = Math.floor(frame / cols) * frameSize;
 
     return (
-        <div className="spiderWrap">
+        <div className={styles.spiderWrap}>
             <div
-                className="spider"
+                className={styles.spider}
                 style={{
                     backgroundPosition: `-${x}px -${y}px`,
                 }}
             />
             <div
-                className="spider-shadow"
+                className={styles.spiderShadow}
                 style={{
                     backgroundPosition: `-${x}px -${y}px`,
                 }}

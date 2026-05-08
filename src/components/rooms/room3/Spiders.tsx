@@ -3,7 +3,7 @@
 import Image from "next/image";
 import DoorButton from "@/components/shared/Button";
 import { useState } from "react";
-import SpiderAnimation from "@/components/effects/Spiders";
+import SpiderAnimation from "@/components/effects/SpiderAnimation";
 
 export default function Spiders() {
   const spiderwebs = [

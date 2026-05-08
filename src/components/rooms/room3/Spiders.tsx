@@ -3,6 +3,7 @@
 import Image from "next/image";
 import DoorButton from "@/components/shared/Button";
 import { useState } from "react";
+import SpiderAnimation from "@/components/effects/Spiders";
 
 export default function Spiders() {
   const spiderwebs = [
@@ -42,6 +43,8 @@ export default function Spiders() {
           </div>
         ) : null
       )}
+      <SpiderAnimation />
+
     </div>
   );
 }

@@ -1,0 +1,77 @@
+.spider {
+    width: 256px;
+    height: 256px;
+
+    background-image: url("/assets/spider/runBody.png");
+    background-repeat: no-repeat;
+
+    animation: jitter 0.4s infinite steps(2)
+}
+
+.spiderShadow {
+    width: 64px;
+    height: 64px;
+
+    position: absolute;
+    bottom: 2;
+    left: 0;
+
+    background-image: url("/assets/spider/runShadow.png");
+    background-size: 256px 256px;
+    background-repeat: no-repeat;
+
+    opacity: 0.5;
+    transform: scale(1.1);
+}
+
+.spiderWrap {
+    position: fixed;
+    bottom: 100px;
+    left: 0;
+    width: 256px;
+    height: 256px;
+    z-index: 30;
+    overflow: hidden;
+    animation: scurry 8s linear infinite;
+
+    transform: scale(0.6);
+    transform-origin: left bottom;
+}
+
+/* Spider movements across screen */
+@keyframes scurry {
+    0% {
+        transform: translateX(110vw) translateY(0px);
+    }
+
+    25% {
+        transform: translateX(55vw) translateY(-20px);
+    }
+
+    50% {
+        transform: translateX(0vw) translateY(15px);
+    }
+
+    75% {
+        transform: translateX(-55vw) translateY(-4px);
+    }
+
+    100% {
+        transform: translateX(-110vw) translateY(0px);
+    }
+}
+
+/* Spider micro movements */
+@keyframes jitter {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

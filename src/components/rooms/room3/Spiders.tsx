@@ -1,12 +1,10 @@
-import { useGameStore } from "@/store/useGameStore";
+import DoorButton from "@/components/shared/Button";
 
 export default function Spiders() {
-  const { /* increaseFear, */ goToNextRoom } = useGameStore();
 
-  const handleGateOpen = (): void => {
-    /* increaseFear(20); */
-    goToNextRoom();
-  };
-
-  return <button onClick={handleGateOpen}>Open the door</button>;
+  return (
+    <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover">
+      <DoorButton buttonText="Do you dare?" />
+    </div>
+  );
 }

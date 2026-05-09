@@ -21,6 +21,14 @@ export type SoundConfig = {
   autoplay?: boolean;
 };
 
+// Here we define which ambient sound should play in each room, using the SoundIds from our SOUND_MAP
+export const ROOM_AMBIENT: Record<RoomId, SoundId> = {
+  graveyard: "howling-wind",
+  dolls: "creaks",
+  spiders: "howling-wind",
+  clown: "synth-ambience",
+};
+
 export const SOUND_MAP = {
   "howling-wind": {
     kind: "ambient",
@@ -91,9 +99,4 @@ export type EffectSoundId = {
   [K in keyof typeof SOUND_MAP]: (typeof SOUND_MAP)[K]["kind"] extends "effect" ? K : never;
 }[keyof typeof SOUND_MAP];
 
-export const ROOM_AMBIENT: Record<RoomId, SoundId> = {
-  graveyard: "howling-wind",
-  dolls: "creaks",
-  spiders: "howling-wind",
-  clown: "synth-ambience",
-};
+

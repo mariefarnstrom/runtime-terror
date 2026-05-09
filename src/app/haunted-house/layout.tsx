@@ -6,7 +6,7 @@ type HauntedHouseLayoutProps = {
 }
 
 export default function HauntedHouseLayout({ children }: HauntedHouseLayoutProps) {
-  useAmbientSound()
+  useAmbientSound();
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">

@@ -74,7 +74,8 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
 
     instance.howl.volume(0)
     const id = instance.howl.play()
-    instance.howl.fade(0, SOUND_MAP[soundId].volume ?? 1, duration, id)
+    const targetVolume = SOUND_MAP[soundId].volume ?? 1
+    instance.howl.fade(0, targetVolume, duration, id)
 
     set((state) => ({
       instances: { ...state.instances, [soundId]: { ...instance, id } },
@@ -87,8 +88,10 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     if (!instance) return
 
     const targetVolume = SOUND_MAP[soundId].volume ?? 1
-    instance.howl.fade(targetVolume, 0, duration, instance.id)
-    instance.howl.once('fade', () => instance.howl.stop())
+    if (instance.id !== undefined) {
+      instance.howl.fade(targetVolume, 0, duration, instance.id)
+      instance.howl.once('fade', () => instance.howl.stop())
+    }
   },
 
   crossfade: (from, to, duration = 1500) => {

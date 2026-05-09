@@ -24,7 +24,7 @@ export type SoundConfig = {
 export const SOUND_MAP = {
   "howling-wind": {
     kind: "ambient",
-    src: ["/assets/audio/ambient/howling-wind.mp3"],
+    src: ["/assets/audio/ambient/howlingWind.mp3"],
     loop: true,
     volume: 0.5,
     autoplay: true,
@@ -95,5 +95,5 @@ export const ROOM_AMBIENT: Record<RoomId, SoundId> = {
   graveyard: "howling-wind",
   dolls: "creaks",
   spiders: "howling-wind",
-  clown: "howling-wind",
+  clown: "synth-ambience",
 };

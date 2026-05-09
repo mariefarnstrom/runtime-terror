@@ -1,6 +1,7 @@
 //Game state store using Zustand
 
 import { create } from "zustand";
+import { useAudioStore } from "@/store/useAudioStore";
 
 
 export type RoomId = 'graveyard' | 'dolls' | 'spiders' | 'clown'
@@ -34,6 +35,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({ currentRoom: ROOMS[nextIndex] });
     } else {
       set({ isComplete: true });
+      const currentAmbient = useAudioStore.getState().currentAmbient;
+      if (currentAmbient) {
+        useAudioStore.getState().fadeOut(currentAmbient, 2000);
+      }
     }
   },
 
@@ -44,10 +49,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   completeGame: () => set({ isComplete: true }),
 
-  resetGame: () =>
+  resetGame: () => {
+    const currentAmbient = useAudioStore.getState().currentAmbient;
+    if (currentAmbient) {
+      useAudioStore.getState().stop(currentAmbient);
+    }
     set({
       currentRoom: 'graveyard',
       /* fearLevel: 0, */
       isComplete: false,
-    }),
+    });
+  },
 }));

@@ -13,5 +13,5 @@ export function useAmbientSound() {
     const nextAmbient = ROOM_AMBIENT[currentRoom]
     if (nextAmbient === currentAmbient) return
     crossfade(currentAmbient, nextAmbient, 2000)
-  }, [currentRoom])
+  }, [currentRoom, currentAmbient, crossfade])
 }

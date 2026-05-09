@@ -14,8 +14,7 @@
 
 @font-face {
   font-family: "Charu Chandan BloodDrip";
-  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf")
-    format("truetype");
+  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf") format("truetype");
 }
 
 /* :root {

@@ -2,9 +2,14 @@
 
 import { create } from "zustand";
 
+
+export type RoomId = 'graveyard' | 'dolls' | 'spiders' | 'clown'
+
+export const ROOMS: RoomId[] = ['graveyard', 'dolls', 'spiders', 'clown']
+
 interface GameStore {
   //state
-  currentRoomIndex: number;
+  currentRoom: RoomId;
   /* fearLevel: number; */
   isComplete: boolean;
 
@@ -15,17 +20,22 @@ interface GameStore {
   resetGame: () => void;
 }
 
-export const useGameStore = create<GameStore>((set) => ({
+export const useGameStore = create<GameStore>((set, get) => ({
   // Start values
-  currentRoomIndex: 0,
+  currentRoom: 'graveyard',
   fearLevel: 0,
   isComplete: false,
 
   // Functions that uppdates state
-  goToNextRoom: () =>
-    set((state) => ({
-      currentRoomIndex: state.currentRoomIndex + 1,
-    })),
+  goToNextRoom: () => {
+    const { currentRoom } = get();
+    const nextIndex = ROOMS.indexOf(currentRoom) + 1;
+    if (nextIndex < ROOMS.length) {
+      set({ currentRoom: ROOMS[nextIndex] });
+    } else {
+      set({ isComplete: true });
+    }
+  },
 
   /*  increaseFear: (amount) =>
     set((state) => ({
@@ -36,7 +46,7 @@ export const useGameStore = create<GameStore>((set) => ({
 
   resetGame: () =>
     set({
-      currentRoomIndex: 0,
+      currentRoom: 'graveyard',
       /* fearLevel: 0, */
       isComplete: false,
     }),

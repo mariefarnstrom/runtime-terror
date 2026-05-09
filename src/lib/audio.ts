@@ -1,4 +1,4 @@
-import { RoomId } from "@/lib/rooms";
+import { RoomId } from "@/store/useGameStore";
 
 export type SoundId = 
 | 'howling-wind' 

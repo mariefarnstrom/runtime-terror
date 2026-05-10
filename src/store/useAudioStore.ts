@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Howl } from "howler";
+import { Howl, Howler } from "howler";
 import { SoundId, SOUND_MAP } from "@/lib/audio";
 
 type HowlInstance = {
@@ -7,6 +7,7 @@ type HowlInstance = {
     howl: Howl;
 };
 
+//Defining the shape of our audio store
 type AudioStore = {
   instances: Partial<Record<SoundId, HowlInstance>>
   currentAmbient: SoundId | null
@@ -73,7 +74,8 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
 
     instance.howl.volume(0)
     const id = instance.howl.play()
-    instance.howl.fade(0, SOUND_MAP[soundId].volume ?? 1, duration, id)
+    const targetVolume = SOUND_MAP[soundId].volume ?? 1
+    instance.howl.fade(0, targetVolume, duration, id)
 
     set((state) => ({
       instances: { ...state.instances, [soundId]: { ...instance, id } },
@@ -86,8 +88,10 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     if (!instance) return
 
     const targetVolume = SOUND_MAP[soundId].volume ?? 1
-    instance.howl.fade(targetVolume, 0, duration, instance.id)
-    instance.howl.once('fade', () => instance.howl.stop())
+    if (instance.id !== undefined) {
+      instance.howl.fade(targetVolume, 0, duration, instance.id)
+      instance.howl.once('fade', () => instance.howl.stop())
+    }
   },
 
   crossfade: (from, to, duration = 1500) => {
@@ -98,12 +102,12 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   setMuted: (muted) => {
-    Howler.mute(muted)   // mutes all Howl instances globally
+    Howler.mute(muted)  
     set({ isMuted: muted })
   },
 
   setMasterVolume: (volume) => {
-    Howler.volume(volume)  // sets global volume
+    Howler.volume(volume)
     set({ masterVolume: volume })
   },
 }))

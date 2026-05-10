@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function RockingChair() {
   return (
     <motion.div
-      className="absolute bottom-10 left-20"
+      className="absolute bottom-20 left-130"
       animate={{ rotate: [-3, 3, -3] }}
       transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
       style={{ originY: 1 }}

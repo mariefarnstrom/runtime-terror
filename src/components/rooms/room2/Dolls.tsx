@@ -1,10 +1,29 @@
 import DoorButton from "@/components/shared/Button";
+import RockingChair from "@/components/effects/RockingChair";
 
 export default function Dolls() {
-
   return (
-    <div className="absolute inset-0 bg-[url('/assets/images/creepy-doll.jpg')] bg-cover">
+    <div
+      className="absolute inset-0 bg-cover bg-center bg-no-repeat
+      bg-[url('/assets/images/dolls-bg.jpg')]"
+    >
+      {/*    <div className="absolute bottom-40 right-140">
+        <img src="/assets/images/dolls2.png" alt="" width={200} height={200} />
+      </div> */}
+
+      <div className="absolute bottom-35 right-60">
+        <img src="/assets/images/doll-head.png" alt="" width={60} height={60} />
+      </div>
+
+      <div className="absolute bottom-25 left-25">
+        <img src="/assets/images/dolls3.png" alt="" width={200} height={200} />
+      </div>
+      <div className="absolute inset-0 bg-black/20" />
+
       <DoorButton buttonText="Enter at own risk" />
+
+      <RockingChair />
+      {/*  <DollsMove /> */}
     </div>
   );
 }

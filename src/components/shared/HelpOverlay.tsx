@@ -21,7 +21,7 @@ export default function HelpOverlay() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Help"
-        className="w-8 h-8 rounded-full border border-grey text-grey font-fell flex items-center justify-center"
+        className="w-8 h-8 rounded-full border border-grey text-grey font-fell flex items-center justify-center cursor-pointer"
       >
         ?
       </button>

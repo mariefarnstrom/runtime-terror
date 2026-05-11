@@ -9,12 +9,13 @@
   --color-red-dark: #7e0b16;
   --color-red-light: #a66e6e;
   --color-brown-dark: #1e1818;
-  --color-grey: rgba(218, 217, 217, 0.893);
+  --color-grey: rgba(218, 217, 217, 90);
 }
 
 @font-face {
   font-family: "Charu Chandan BloodDrip";
-  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf") format("truetype");
+  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf")
+    format("truetype");
 }
 
 /* :root {

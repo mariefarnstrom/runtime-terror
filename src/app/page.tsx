@@ -6,6 +6,7 @@ import { useState } from "react";
 import { processPayment } from "@/lib/payment";
 import Link from "next/link";
 import Bats from "@/components/effects/Bats";
+import HelpOverlay from "@/components/shared/HelpOverlay";
 
 export default function Home() {
   const [error, setError] = useState<ApiError | null>(null);
@@ -31,7 +32,7 @@ export default function Home() {
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Background — lowest layer */}
-      <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover" />
+      <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover bg-bottom" />
 
       {/* Fog — above background */}
       <Fog />
@@ -43,29 +44,36 @@ export default function Home() {
         <h1 className="font-eater text-red-800 text-5xl leading-normal">
           Runtime terror
         </h1>
-
-        <div className="bg-white/40 p-6 rounded">
-          <h2 className="font-fell text-xl">
-            Are you a scaredy cat — or do you laugh in the face of horror?
-          </h2>
-          <h2 className="font-fell text-xl">
-            Enter Runtime Terror and find out if you can handle what's inside.
-          </h2>
-        </div>
-
-        <div className="flex flex-col gap-8 w-full h-full items-center">
-          <h3 className="text-white text-xl">
-            Enter the house for {ENTRY_PRICE}€
-          </h3>
-          <div className="w-[80vw] max-w-80 justify-end">
-            <EnterForm onSubmit={handlePayment} />
-            {error && (
-              <p className="text-red-500 mt-4">Error: {error.message}</p>
-            )}
+        <div className="flex flex-col h-full items-center self-start">
+          <div className="bg-black/40 p-6 m-10 rounded flex flex-col w-100 ">
+            <div className="flex items-start gap-2">
+              <div className="flex flex-col gap-4">
+                <h2 className="font-fell text-grey text-xl">
+                  Are you a scaredy cat — or do you laugh in the face of horror?
+                </h2>
+                <h2 className="font-fell text-grey text-xl">
+                  Enter Runtime Terror and find out if you can handle what's
+                  inside.
+                </h2>
+              </div>
+              <HelpOverlay />
+            </div>
           </div>
-          <Link href="/haunted-house" className="text-white underline mt-4">
-            Enter house (for testing)
-          </Link>
+
+          <div className="flex flex-col gap-8 w-full h-full items-center">
+            <h3 className="text-white text-xl">
+              Enter the house for {ENTRY_PRICE}€
+            </h3>
+            <div className="w-[80vw] max-w-80 justify-end">
+              <EnterForm onSubmit={handlePayment} />
+              {error && (
+                <p className="text-red-500 mt-4">Error: {error.message}</p>
+              )}
+            </div>
+            <Link href="/haunted-house" className="text-white underline mt-4">
+              Enter house (for testing)
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export default function Dolls() {
       <div className="absolute bottom-25 left-25">
         <img src="/assets/images/dolls3.png" alt="" width={200} height={200} />
       </div>
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
       <DoorButton buttonText="Enter at own risk" />
 

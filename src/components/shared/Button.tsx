@@ -13,7 +13,7 @@ export default function DoorButton({ buttonText }: DoorButtonProps) {
     };
 
     return (
-        <button onClick={handleDoorOpen} className="bg-red-800">
+        <button onClick={handleDoorOpen} className="bg-red-800 z-100">
             {buttonText}
         </button>
     );

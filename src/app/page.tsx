@@ -34,9 +34,9 @@ export default function Home() {
       {/* Background — lowest layer */}
       <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover bg-bottom" />
 
-      {/* Fog — above background */}
+      {/* Fog — above background 
       <Fog />
-
+*/}
       <Bats />
 
       {/* Content — top layer */}

@@ -1,5 +1,4 @@
 import { useAudioStore } from "@/store/useAudioStore";
-import { useEffect } from "react";
 import { EffectSoundId } from "@/lib/audio";
 
 type Props = {

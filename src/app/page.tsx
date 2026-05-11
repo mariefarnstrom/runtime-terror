@@ -7,7 +7,7 @@ import { processPayment } from "@/lib/payment";
 import Link from "next/link";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
-import { useUrlParams } from "@/lib/useUrlParams";
+import { useUrlParams } from "@/hooks/useUrlParams";
 
 export default function Home() {
   const [error, setError] = useState<ApiError | null>(null);

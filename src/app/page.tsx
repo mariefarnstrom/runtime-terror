@@ -7,10 +7,17 @@ import { processPayment } from "@/lib/payment";
 import Link from "next/link";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
+import { useUrlParams } from "@/lib/useUrlParams";
 
 export default function Home() {
   const [error, setError] = useState<ApiError | null>(null);
   const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
+
+  const { identityToken } = useUrlParams();
+
+  if (identityToken) {
+    console.log("Identity Token from URL:", identityToken);
+  }
 
   const handlePayment = async (name: string) => {
     setError(null);

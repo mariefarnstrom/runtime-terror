@@ -33,14 +33,11 @@ export default function Home() {
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Background — lowest layer */}
       <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover bg-bottom" />
-
-      {/* Fog — above background 
-      <Fog />
-*/}
       <Bats />
-
+      {/* Fog — above background */}
+      <Fog />
       {/* Content — top layer */}
-      <div className="relative z-10 flex flex-col w-full items-center">
+      <div className="relative z-20 flex flex-col w-full items-center">
         <h1 className="font-eater text-red-800 text-5xl leading-normal">
           Runtime terror
         </h1>

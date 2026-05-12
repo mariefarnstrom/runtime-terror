@@ -3,15 +3,17 @@ import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import { ApiError } from "@/types/errors";
 import { useState } from "react";
-import { processPayment } from "@/lib/payment";
 import { useRouter } from "next/navigation";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
 import { useUrlParams } from "@/hooks/useUrlParams";
+import { UnauthorizedModal } from "@/components/shared/UnauthorizedModal";
 
 export default function Home() {
   const router = useRouter();
   const [error, setError] = useState<ApiError | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
   const [devAccessLoading, setDevAccessLoading] = useState(false);
   const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
 
@@ -23,20 +25,49 @@ export default function Home() {
 
   const handlePayment = async (identityToken: string) => {
     setError(null);
+    setIsLoading(true);
 
-    const result = await processPayment({
-      identity_token: identityToken || "",
-      amount: ENTRY_PRICE,
-      amusement_uuid: process.env.NEXT_PUBLIC_SELLER || "default-seller",
-    });
-
-    if (!result.success) {
-      setError({
-        message: result.error?.message ?? "Payment failed",
-        status: result.error?.status,
+    try {
+      const res = await fetch("/api/transaction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identity_token: identityToken,
+          amount: ENTRY_PRICE,
+          amusement_uuid: process.env.NEXT_PUBLIC_SELLER || "default-seller",
+        }),
       });
-    }
 
+      const data = await res.json();
+
+      if (res.status === 401) {
+        setShowUnauthorizedModal(true);
+        return;
+      }
+
+      if (!res.ok) {
+        setError({
+          message: data.error?.message ?? "Payment failed",
+          status: res.status,
+        });
+        return;
+      }
+
+      if (data.success) {
+        router.push("/haunted-house");
+      } else {
+        setError({
+          message: data.error?.message ?? "Payment failed",
+          status: data.error?.status,
+        });
+      }
+    } catch (err) {
+      setError({
+        message: err instanceof Error ? err.message : "An error occurred",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDevAccess = async () => {
@@ -49,7 +80,7 @@ export default function Home() {
       if (!res.ok) {
         throw new Error("Could not create access cookie");
       }
-      
+
       router.push("/haunted-house");
     } catch {
       setError({ message: "Dev access failed. Could not set cookie." });
@@ -91,7 +122,11 @@ export default function Home() {
               Enter the house for {ENTRY_PRICE}€
             </h3>
             <div className="w-[80vw] max-w-80 justify-end">
-              <EnterForm onSubmit={handlePayment} />
+              <EnterForm
+                onSubmit={handlePayment}
+                identityToken={identityToken}
+                isLoading={isLoading}
+              />
               {error && (
                 <p className="text-red-500 mt-4">Error: {error.message}</p>
               )}
@@ -109,6 +144,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <UnauthorizedModal
+        isOpen={showUnauthorizedModal}
+        onClose={() => setShowUnauthorizedModal(false)}
+      />
     </div>
   );
 }

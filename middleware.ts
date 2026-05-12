@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ACCESS_COOKIE_NAME, ACCESS_COOKIE_VALUE } from "./src/lib/accessCookie";
 
 export function middleware(request: NextRequest): NextResponse {
-  const accessGranted = request.cookies.get("access_granted")?.value === "true";
+  const accessGranted = request.cookies.get(ACCESS_COOKIE_NAME)?.value === ACCESS_COOKIE_VALUE;
 
   if (!accessGranted) {
     const redirectUrl = new URL("/", request.url);

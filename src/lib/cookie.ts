@@ -1,47 +1,39 @@
 import { cookies } from "next/headers";
+import {
+    ACCESS_COOKIE_MAX_AGE_SECONDS,
+    ACCESS_COOKIE_NAME,
+    ACCESS_COOKIE_OPTIONS,
+    ACCESS_COOKIE_PATH,
+    ACCESS_COOKIE_VALUE,
+} from "./accessCookie";
 
-const ACCESS_COOKIE_OPTIONS = {
-    httpOnly: true,
-    path: "/haunted-house",
-    maxAge: 60 * 60,
-    sameSite: "lax" as const,
-    secure: process.env.NODE_ENV === "production",
+const ACCESS_COOKIE_SCOPED_OPTIONS = {
+    ...ACCESS_COOKIE_OPTIONS,
+    path: ACCESS_COOKIE_PATH,
+    maxAge: ACCESS_COOKIE_MAX_AGE_SECONDS,
 };
 
 export async function setAccessCookie() {
     const cookieStore = await cookies();
     cookieStore.set({
-        name: "access_granted",
-        value: "true",
-        ...ACCESS_COOKIE_OPTIONS,
+        name: ACCESS_COOKIE_NAME,
+        value: ACCESS_COOKIE_VALUE,
+        ...ACCESS_COOKIE_SCOPED_OPTIONS,
     });
 }
 
 export async function checkAccessCookie() {
     const cookieStore = await cookies();
-    const accessCookie = cookieStore.get("access_granted");
-    return accessCookie?.value === "true";
+    const accessCookie = cookieStore.get(ACCESS_COOKIE_NAME);
+    return accessCookie?.value === ACCESS_COOKIE_VALUE;
 }
 
 export async function clearAccessCookie() {
     const cookieStore = await cookies();
-
-    // Clear current scoped cookie.
     cookieStore.set({
-        name: "access_granted",
+        name: ACCESS_COOKIE_NAME,
         value: "",
-        ...ACCESS_COOKIE_OPTIONS,
+        ...ACCESS_COOKIE_SCOPED_OPTIONS,
         maxAge: 0,
-    });
-
-    // Clear legacy cookie path in case an older version set it at '/'.
-    cookieStore.set({
-        name: "access_granted",
-        value: "",
-        httpOnly: true,
-        path: "/",
-        maxAge: 0,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
     });
 }

@@ -12,17 +12,16 @@ export const ROOMS: RoomId[] = ['graveyard', 'dolls', 'spiders', 'clown']
 interface GameStore {
   //state
   currentRoom: RoomId;
-  /* fearLevel: number; */
   isComplete: boolean;
 
   //actions
   goToNextRoom: () => void;
-  /* increaseFear: (amount: number) => void; */
   completeGame: () => void;
   resetGame: () => void;
 }
 
 export const useGameStore = create<GameStore>()(
+  // Persist middleware saves the game state to localStorage, allowing the player to continue from the same room even after a page reload or when returning to the site later.
   persist(
     (set, get) => ({
       // Start values
@@ -54,7 +53,6 @@ export const useGameStore = create<GameStore>()(
         }
         set({
           currentRoom: 'graveyard',
-          /* fearLevel: 0, */
           isComplete: false,
         });
       },

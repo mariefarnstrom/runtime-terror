@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest): NextResponse {
   const accessGranted = request.cookies.get("access_granted")?.value === "true";
 
   if (!accessGranted) {

@@ -1,10 +1,46 @@
+"use client"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function EndPage() {
+  const router = useRouter();
+  const [isRevoking, setIsRevoking] = useState(false);
+  const [revokeError, setRevokeError] = useState<string | null>(null);
+
+  const revokeDevAccess = async () => {
+    setIsRevoking(true);
+    setRevokeError(null);
+
+    try {
+      const res = await fetch("/api/access", { method: "DELETE", cache: "no-store" });
+
+      if (!res.ok) {
+        throw new Error("Failed to revoke access cookie");
+      }
+
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      setRevokeError("Failed to revoke dev access. Please try again.");
+      console.error("Failed to revoke dev access:", error);
+    } finally {
+      setIsRevoking(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold mb-4">Congratulations! You've escaped the Hunted House!</h1>
       <Link href="/" className="text-red-800 underline mt-4">Play again</Link>
+      <button
+        className="text-sm text-gray-500 mt-2"
+        onClick={revokeDevAccess}
+        disabled={isRevoking}
+      >
+        {isRevoking ? "Revoking access..." : "Revoke dev access (for testing)"}
+      </button>
+      {revokeError && <p className="text-red-500 mt-2 text-sm">{revokeError}</p>}
     </div>
   );
 }

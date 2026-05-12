@@ -25,10 +25,23 @@ export async function checkAccessCookie() {
 
 export async function clearAccessCookie() {
     const cookieStore = await cookies();
+
+    // Clear current scoped cookie.
     cookieStore.set({
         name: "access_granted",
         value: "",
         ...ACCESS_COOKIE_OPTIONS,
         maxAge: 0,
+    });
+
+    // Clear legacy cookie path in case an older version set it at '/'.
+    cookieStore.set({
+        name: "access_granted",
+        value: "",
+        httpOnly: true,
+        path: "/",
+        maxAge: 0,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
     });
 }

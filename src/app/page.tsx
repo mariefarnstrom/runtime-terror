@@ -4,13 +4,15 @@ import Fog from "@/components/effects/Fog";
 import { ApiError } from "@/types/errors";
 import { useState } from "react";
 import { processPayment } from "@/lib/payment";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
 import { useUrlParams } from "@/hooks/useUrlParams";
 
 export default function Home() {
+  const router = useRouter();
   const [error, setError] = useState<ApiError | null>(null);
+  const [devAccessLoading, setDevAccessLoading] = useState(false);
   const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
 
   const { identityToken } = useUrlParams();
@@ -35,6 +37,25 @@ export default function Home() {
       });
     }
 
+  };
+
+  const handleDevAccess = async () => {
+    setDevAccessLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/access", { method: "POST" });
+
+      if (!res.ok) {
+        throw new Error("Could not create access cookie");
+      }
+      
+      router.push("/haunted-house");
+    } catch {
+      setError({ message: "Dev access failed. Could not set cookie." });
+    } finally {
+      setDevAccessLoading(false);
+    }
   };
 
   return (
@@ -78,11 +99,16 @@ export default function Home() {
                 <p className="text-red-500 mt-4">Error: {error.message}</p>
               )}
             </div>
-            <Link 
-            href="/haunted-house"
-            className="text-white underline mt-4">
-              Enter house (for testing)
-            </Link>
+            {process.env.NODE_ENV !== "production" && (
+              <button
+                type="button"
+                onClick={handleDevAccess}
+                disabled={devAccessLoading}
+                className="text-white underline mt-4 disabled:opacity-50"
+              >
+                {devAccessLoading ? "Setting dev access..." : "Enter house (dev cookie test)"}
+              </button>
+            )}
           </div>
         </div>
       </div>

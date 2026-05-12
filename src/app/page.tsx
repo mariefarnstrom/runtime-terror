@@ -19,13 +19,13 @@ export default function Home() {
     console.log("Identity Token from URL:", identityToken);
   }
 
-  const handlePayment = async (name: string) => {
+  const handlePayment = async (identityToken: string) => {
     setError(null);
 
     const result = await processPayment({
-      seller: process.env.NEXT_PUBLIC_SELLER || "default-seller",
-      buyer: name,
+      identity_token: identityToken || "",
       amount: ENTRY_PRICE,
+      amusement_uuid: process.env.NEXT_PUBLIC_SELLER || "default-seller",
     });
 
     if (!result.success) {
@@ -34,6 +34,7 @@ export default function Home() {
         status: result.error?.status,
       });
     }
+
   };
 
   return (
@@ -77,7 +78,9 @@ export default function Home() {
                 <p className="text-red-500 mt-4">Error: {error.message}</p>
               )}
             </div>
-            <Link href="/haunted-house" className="text-white underline mt-4">
+            <Link 
+            href="/haunted-house"
+            className="text-white underline mt-4">
               Enter house (for testing)
             </Link>
           </div>

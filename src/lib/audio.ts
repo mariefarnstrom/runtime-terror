@@ -1,15 +1,18 @@
 import { RoomId } from "@/store/useGameStore";
 
-export type SoundId = 
-| 'howling-wind' 
-| 'creaks'
-| 'synth-ambience'
-| 'approaching-ghost'
-| 'ghostly-effect'
-| 'danger'
-| 'creaking-gate'
-| 'jumpscare'
-| 'jumpscare-piano'
+export type SoundId =
+  | "howling-wind"
+  | "creaks"
+  | "synth-ambience"
+  | "approaching-ghost"
+  | "ghostly-effect"
+  | "danger"
+  | "creaking-gate"
+  | "jumpscare"
+  | "jumpscare-piano"
+  | "loud-jumpscare"
+  | "music-box"
+  | "doll-voice";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -93,10 +96,31 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
+  "loud-jumpscare": {
+    kind: "effect",
+    src: ["/assets/audio/effect/loud-jumpscare.mp3"],
+    loop: false,
+    volume: 0.4,
+    autoplay: false,
+  },
+  "music-box": {
+    kind: "ambient",
+    src: ["/assets/audio/effect/music-box.wav"],
+    loop: true,
+    volume: 0.5,
+    autoplay: true,
+  },
+  "doll-voice": {
+    kind: "effect",
+    src: ["/assets/audio/effect/creepy-girl-laugh.wav"],
+    loop: false,
+    volume: 0.7,
+    autoplay: false,
+  },
 } as const satisfies Record<SoundId, SoundConfig>;
 
 export type EffectSoundId = {
-  [K in keyof typeof SOUND_MAP]: (typeof SOUND_MAP)[K]["kind"] extends "effect" ? K : never;
+  [K in keyof typeof SOUND_MAP]: (typeof SOUND_MAP)[K]["kind"] extends "effect"
+    ? K
+    : never;
 }[keyof typeof SOUND_MAP];
-
-

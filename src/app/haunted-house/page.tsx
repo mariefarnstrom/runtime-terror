@@ -6,7 +6,7 @@ import Graveyard from "@/components/rooms/room1/Graveyard";
 import Dolls from "@/components/rooms/room2/Dolls";
 import Spiders from "@/components/rooms/room3/Spiders";
 import Clown from "@/components/rooms/room4/Clown";
-import { ComponentType, useEffect } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const ROOMS: Record<RoomId, ComponentType> = {
@@ -23,11 +23,48 @@ export default function HauntedHousePage() {
   const isComplete = useGameStore(s => s.isComplete);
   const CurrentRoom = ROOMS[currentRoom];
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     if (isComplete) {
       router.push("/haunted-house/end");
     }
   }, [isComplete, router]);
 
-  return <CurrentRoom key={currentRoom} />;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <div>
+      <div
+        className={currentRoom === "graveyard" ? "block" : "hidden paused"}
+      >
+        <Graveyard />
+      </div>
+
+      <div
+        className={currentRoom === "dolls" ? "block" : "hidden paused"}
+      >
+        <Dolls />
+      </div>
+
+      <div
+        className={currentRoom === "spiders" ? "block" : "hidden paused"}
+      >
+        <Spiders />
+      </div>
+
+      <div
+        className={currentRoom === "clown" ? "block" : "hidden paused"}
+      >
+        <Clown />
+      </div>
+    </div>
+
+
+  )
+  // < CurrentRoom key = { currentRoom } />;
 }

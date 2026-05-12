@@ -9,7 +9,7 @@
   --color-red-dark: #7e0b16;
   --color-red-light: #a66e6e;
   --color-brown-dark: #1e1818;
-  --color-grey: rgba(218, 217, 217, 90);
+  --color-grey: rgb(218 217 217 / 90%);
 }
 
 @font-face {
@@ -31,4 +31,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.paused * {
+  animation-play-state: paused !important;
 }

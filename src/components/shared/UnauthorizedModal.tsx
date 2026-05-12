@@ -22,7 +22,6 @@ export function UnauthorizedModal({ isOpen, onClose }: UnauthorizedModalProps) {
           aria-labelledby="unauthorized-title"
         >
           <div className="relative max-w-md w-full bg-brown-dark border border-grey p-8 rounded">
-            {/* Close button */}
             <button
               onClick={onClose}
               aria-label="Close modal"

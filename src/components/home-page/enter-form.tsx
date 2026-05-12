@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 
 type EnterFormProps = {
   onSubmit: (identityToken: string) => Promise<void>;
@@ -8,21 +7,14 @@ type EnterFormProps = {
 };
 
 export default function EnterForm({ onSubmit, identityToken, isLoading }: EnterFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identityToken) return;
-    
-    setIsSubmitting(true);
-    try {
-      await onSubmit(identityToken);
-    } finally {
-      setIsSubmitting(false);
-    }
+
+    await onSubmit(identityToken);
   };
 
-  const isDisabled = isSubmitting || isLoading || !identityToken;
+  const isDisabled = isLoading || !identityToken;
 
   return (
     <form
@@ -34,7 +26,7 @@ export default function EnterForm({ onSubmit, identityToken, isLoading }: EnterF
         disabled={isDisabled}
         className="border border-black rounded px-4 py-2 cursor-pointer hover:bg-red-700 hover:text-white transition focus:ring-2 focus:ring-red-700 focus:outline-none disabled:opacity-50"
       >
-        {isSubmitting || isLoading ? "Processing..." : "Pay Entry Fee"}
+        {isLoading ? "Processing..." : "Pay Entry Fee"}
       </button>
       {isDisabled && !identityToken && (
         <p className="text-red-500 text-sm mt-2">

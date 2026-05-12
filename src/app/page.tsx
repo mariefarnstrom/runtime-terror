@@ -8,11 +8,11 @@ import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
 import { useUrlParams } from "@/hooks/useUrlParams";
 import { UnauthorizedModal } from "@/components/shared/UnauthorizedModal";
+import { useTransaction } from "@/hooks/useTransaction";
 
 export default function Home() {
   const router = useRouter();
   const [error, setError] = useState<ApiError | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
   const [devAccessLoading, setDevAccessLoading] = useState(false);
   const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
@@ -23,53 +23,13 @@ export default function Home() {
     console.log("Identity Token from URL:", identityToken);
   }
 
-  const handlePayment = async (identityToken: string) => {
-    setError(null);
-    setIsLoading(true);
+  const { submitTransaction, isLoading } = useTransaction({
+    onSuccess: () => router.push("/haunted-house"),
+    onUnauthorized: () => setShowUnauthorizedModal(true),
+    onError: setError,
+  });
 
-    try {
-      const res = await fetch("/api/transaction", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          identity_token: identityToken,
-          amount: ENTRY_PRICE,
-          amusement_uuid: process.env.NEXT_PUBLIC_SELLER || "default-seller",
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.status === 401) {
-        setShowUnauthorizedModal(true);
-        return;
-      }
-
-      if (!res.ok) {
-        setError({
-          message: data.error?.message ?? "Payment failed",
-          status: res.status,
-        });
-        return;
-      }
-
-      if (data.success) {
-        router.push("/haunted-house");
-      } else {
-        setError({
-          message: data.error?.message ?? "Payment failed",
-          status: data.error?.status,
-        });
-      }
-    } catch (err) {
-      setError({
-        message: err instanceof Error ? err.message : "An error occurred",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Dev access handler for testing cookie setting without going through payment flow
   const handleDevAccess = async () => {
     setDevAccessLoading(true);
     setError(null);
@@ -109,7 +69,7 @@ export default function Home() {
                   Are you a scaredy cat — or do you laugh in the face of horror?
                 </h2>
                 <h2 className="font-fell text-grey text-xl">
-                  Enter Runtime Terror and find out if you can handle what's
+                  Enter Runtime Terror and find out if you can handle what&apos;s
                   inside.
                 </h2>
               </div>
@@ -123,7 +83,7 @@ export default function Home() {
             </h3>
             <div className="w-[80vw] max-w-80 justify-end">
               <EnterForm
-                onSubmit={handlePayment}
+                onSubmit={submitTransaction}
                 identityToken={identityToken}
                 isLoading={isLoading}
               />

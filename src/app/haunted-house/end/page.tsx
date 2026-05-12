@@ -9,7 +9,8 @@ export default function EndPage() {
   const router = useRouter();
 
   const handleTivoliReturn = () => {
-    // TODO: Replace with actual tivoli site URL
+    useGameStore.getState().resetGame();
+    // TODO: Replace with actual tivoli site URL and 
     router.push("/");
   };
 

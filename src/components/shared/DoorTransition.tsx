@@ -53,11 +53,12 @@ export default function DoorTransition({
         )}
       </motion.div>
 
-      {!isOpen && (
-        <p className="font-fell text-grey text-sm tracking-widest animate-pulse">
-          {buttonText}
-        </p>
-      )}
+      <p
+        className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${!isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+      >
+        {buttonText}
+      </p>
     </div>
   );
 }

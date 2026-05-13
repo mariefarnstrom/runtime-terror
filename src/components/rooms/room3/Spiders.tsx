@@ -36,7 +36,9 @@ export default function Spiders() {
       {/* <DoorButton buttonText="Do you dare?" /> */}
       <DoorTransition
         buttonText="Do you dare?"
-        doorImage="/assets/images/ladder.png"
+        doorImage=""
+        animated={false}
+        positionClass="bottom-1/3 right-15"
       />
       {spiderwebs.map((web) =>
         visibleWebs.includes(web.id) ? (

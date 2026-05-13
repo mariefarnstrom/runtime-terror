@@ -57,17 +57,26 @@ export default function HelpOverlay() {
               </h2>
               <div className="flex flex-col gap-3">
                 <p className="font-fell text-grey">
-                  Enter your user ID to buy a ticket and enter the haunted
-                  house.
+                  Click on the Enter house for 3€ button to use your token and
+                  enter the haunted house.
                 </p>
 
                 <p className="font-fell text-grey">
-                  Make your way through each room and see how scared you really
-                  are.
+                  Make your way through each room by following the instructions,
+                  and see how scared you really are.
                 </p>
 
                 <p className="font-fell text-grey">
                   Click on objects to interact with them.
+                </p>
+
+                <p className="font-fell text-grey">
+                  If you can't handle the horror you can always leave by
+                  clicking on the exit button at the bottom of the page.
+                </p>
+
+                <p className="font-fell text-grey">
+                  You will get your stamp at the end before you leave
                 </p>
               </div>
             </div>

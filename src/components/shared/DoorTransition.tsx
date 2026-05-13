@@ -69,7 +69,7 @@ export default function DoorTransition({
           onClick={handleClick}
           className="flex flex-col items-center justify-center gap-4 cursor-pointer group"
         >
-          <div 
+          <div
             className="text-6xl text-gray-400"
             style={{
               animation: "bounce-diagonal 1s infinite",

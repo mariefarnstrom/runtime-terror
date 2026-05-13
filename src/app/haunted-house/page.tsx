@@ -21,15 +21,21 @@ export default function HauntedHousePage() {
   const router = useRouter();
   const currentRoom = useGameStore(s => s.currentRoom);
   const isComplete = useGameStore(s => s.isComplete);
-  const CurrentRoom = ROOMS[currentRoom];
-
   const [mounted, setMounted] = useState(false);
 
+  // Reset if coming back from end page
   useEffect(() => {
     if (isComplete) {
+      useGameStore.getState().resetGame();
+    }
+  }, []);
+
+  // Redirect to end when game is complete
+  useEffect(() => {
+    if (isComplete && mounted) {
       router.push("/haunted-house/end");
     }
-  }, [isComplete, router]);
+  }, [isComplete, mounted, router]);
 
   useEffect(() => {
     setMounted(true);
@@ -63,8 +69,5 @@ export default function HauntedHousePage() {
         <Clown />
       </div>
     </div>
-
-
-  )
-  // < CurrentRoom key = { currentRoom } />;
+  );
 }

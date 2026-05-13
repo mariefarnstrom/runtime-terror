@@ -12,7 +12,7 @@ export type SoundId =
   | "jumpscare-piano"
   | "loud-jumpscare"
   | "music-box"
-  | "doll-voice";
+  | "doll-laugh";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -110,7 +110,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: true,
   },
-  "doll-voice": {
+  "doll-laugh": {
     kind: "effect",
     src: ["/assets/audio/effect/creepy-girl-laugh.wav"],
     loop: false,

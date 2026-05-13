@@ -38,7 +38,8 @@ body {
 }
 
 @keyframes bounce-diagonal {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
   }
   50% {

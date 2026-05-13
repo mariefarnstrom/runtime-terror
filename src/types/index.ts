@@ -1,22 +1,18 @@
 import { PaymentError, ApiError } from "./errors";
 
 export type Transaction = {
-    seller: string;
-    buyer: string;
+    identity_token: string;
     amount: number;
+    amusement_uuid: string;
 };
-
-export type TransactionBuyer = Pick<Transaction, "buyer">;
 
 export type PaymentResponse = {
   success: boolean
-  accessToken?: string
   error?: PaymentError
 }
 
 export interface PaymentResult {
   success: boolean
-  accessToken?: string
   error?: string
   declineCode?: string
 }

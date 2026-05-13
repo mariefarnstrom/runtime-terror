@@ -30,7 +30,7 @@ export default function RockingChair() {
       setIsJumpscare(true);
       setTimeout(() => setIsJumpscare(false), 1000);
     } else {
-      play("doll-voice");
+      play("doll-laugh");
       setCurrentPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
       setIsTalking(true);
       setTimeout(() => setIsTalking(false), 3000);
@@ -59,7 +59,7 @@ export default function RockingChair() {
       </AnimatePresence>
 
       <motion.div
-        className="absolute bottom-15 left-1/2 -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-15 left-1/3 -translate-x-1/2 cursor-pointer z-20"
         animate={{ rotate: [-3, 3, -3] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
         style={{ originY: 1 }}

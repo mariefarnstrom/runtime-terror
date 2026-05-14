@@ -19,38 +19,59 @@ export default function DoorTransition({
   positionClass = "bottom-45 left-1/2 -translate-x-1/2 md:bottom-35",
 }: DoorTransitionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isFading, setIsFading] = useState(false);
+  const [fadeState, setFadeState] = useState<"idle" | "fadingOut" | "fadingIn">("idle");
   const [mounted, setMounted] = useState(false);
   const { goToNextRoom } = useGameStore();
+
+  const DOOR_ANIMATION_DURATION = animated ? 1200 : 0;
+  const FADE_OUT_DURATION = 800;
+  const FADE_IN_DURATION = 800;
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleClick = (): void => {
-    if (animated) {
-      setIsOpen(true);
-      // Wait for door animation to finish (1.2s), then fade and switch room
+    setIsOpen(true);
+
+    // Wait for door animation before starting room transition
+    setTimeout(() => {
+      // Fade OUT current room
+      setFadeState("fadingOut");
+
+      // After fade out completes
       setTimeout(() => {
-        setIsFading(true);
         goToNextRoom();
-      }, 1200);
-    } else {
-      // For arrow mode, go to next room immediately
-      goToNextRoom();
-    }
+
+        // Fade IN new room
+        setFadeState("fadingIn");
+
+        // Remove overlay after fade in
+        setTimeout(() => {
+          setFadeState("idle");
+        }, FADE_IN_DURATION);
+
+      }, FADE_OUT_DURATION);
+
+    }, DOOR_ANIMATION_DURATION);
+
   };
 
   return (
     <>
       {/* Fade overlay rendered to body as portal */}
-      {mounted && animated && isFading &&
+      {mounted && fadeState !== "idle" &&
         createPortal(
           <motion.div
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
+            initial={{
+              opacity: fadeState === "fadingOut" ? 0 : 1
+            }}
+            animate={{
+              opacity: fadeState === "fadingOut" ? 1 : 0
+            }}
+
             transition={{
-              duration: 2.8,
+              duration: 0.8,
               ease: "easeInOut"
             }}
             className="fixed inset-0 bg-black pointer-events-none"
@@ -80,7 +101,7 @@ export default function DoorTransition({
               className="relative w-48 h-80 cursor-pointer"
             >
               {doorImage ? (
-                <img src={doorImage} alt="" className="w-full h-full object-cover" />
+                <img src={doorImage} alt="Door" className="w-full h-full object-cover" />
               ) : (
                 // CSS door fallback
                 <div className="absolute inset-0 bg-linear-to-b from-stone-900 to-stone-950 border-2 border-stone-700 rounded-t-lg flex flex-col items-center justify-center gap-6">
@@ -106,7 +127,7 @@ export default function DoorTransition({
               ↗
             </div>
             {doorImage && (
-              <img src={doorImage} alt="" className="w-48 h-48 object-cover" />
+              <img src={doorImage} alt="Room entrance" className="w-48 h-48 object-cover" />
             )}
           </div>
         )}

@@ -90,8 +90,9 @@ export default function DoorTransition({
             {/* Background visible behind door when it opens */}
             <div className="absolute inset-2 w-40 h-75 bg-black bg-cover bg-center" />
 
-            <motion.div
+            <motion.button
               onClick={!isOpen ? handleClick : undefined}
+              aria-label="Go to next room"
               animate={{ rotateY: isOpen ? -110 : 0 }}
               transition={{ duration: 1.2, ease: "easeInOut" }}
               style={{
@@ -110,12 +111,13 @@ export default function DoorTransition({
                   <div className="absolute right-4 top-1/2 w-3 h-3 rounded-full bg-yellow-700" />
                 </div>
               )}
-            </motion.div>
+            </motion.button>
           </>
         ) : (
           /* Arrow mode - static display */
-          <div
+          <button
             onClick={handleClick}
+            aria-label="Go to next room"
             className="flex flex-col items-center justify-center gap-4 cursor-pointer group"
           >
             <div
@@ -129,7 +131,7 @@ export default function DoorTransition({
             {doorImage && (
               <img src={doorImage} alt="Room entrance" className="w-48 h-48 object-cover" />
             )}
-          </div>
+          </button>
         )}
 
         <p

@@ -21,18 +21,20 @@ export default function SpiderAnimation() {
 
     return (
         <div className={styles.spiderWrap}>
-            <div
-                className={styles.spider}
-                style={{
-                    backgroundPosition: `-${x}px -${y}px`,
-                }}
-            />
-            <div
-                className={styles.spiderShadow}
-                style={{
-                    backgroundPosition: `-${x}px -${y}px`,
-                }}
-            />
+            <div className={styles.spiderScale}>
+                <div
+                    className={styles.spider}
+                    style={{
+                        backgroundPosition: `-${x}px -${y}px`,
+                    }}
+                />
+                <div
+                    className={styles.spiderShadow}
+                    style={{
+                        backgroundPosition: `-${x}px -${y}px`,
+                    }}
+                />
+            </div>
         </div>
     );
 }

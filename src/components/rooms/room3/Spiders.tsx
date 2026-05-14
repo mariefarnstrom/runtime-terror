@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import DoorButton from "@/components/shared/DoorTransition";
 import { useState } from "react";
 import SpiderAnimation from "@/components/effects/SpiderAnimation";
 import DoorTransition from "@/components/shared/DoorTransition";
@@ -33,7 +32,6 @@ export default function Spiders() {
 
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover bg-bottom">
-      {/* <DoorButton buttonText="Do you dare?" /> */}
       <DoorTransition
         buttonText="Do you dare?"
         doorImage=""
@@ -45,14 +43,14 @@ export default function Spiders() {
           <div key={web.id} className={`absolute ${web.className}`}>
             <Image
               src={web.src}
-              alt="web"
+              alt="Spider web"
               width={500}
               height={500}
               className="pointer-events-none h-full w-auto"
             />
 
             <button
-              aria-label="Remove spiderweb"
+              aria-label="Remove spider web"
               onClick={() => removeWeb(web.id)}
               className="absolute top-[30%] left-[30%] h-72 w-72 cursor-pointer"
             />

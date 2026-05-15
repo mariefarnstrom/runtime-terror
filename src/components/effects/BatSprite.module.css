@@ -1,0 +1,17 @@
+.bat-sprite {
+  width: 120px;
+  height: 120px;
+  background-image: url("/assets/images/bat-sprite.png");
+  background-repeat: no-repeat;
+  background-size: 840px 120px;
+  animation: flap 0.6s steps(7) infinite;
+}
+
+@keyframes flap {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -840px 0;
+  }
+}

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
+import { useGameStore } from "@/store/useGameStore";
 
 const phrases = [
   "I've been waiting for you...",
@@ -15,12 +16,17 @@ export default function RockingChair() {
   const [isTalking, setIsTalking] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const { play, fadeIn, stop } = useAudioStore();
+  const { play, fadeIn, fadeOut, stop } = useAudioStore();
+  const currentRoom = useGameStore((s) => s.currentRoom);
 
   useEffect(() => {
-    fadeIn("music-box", 2000);
-    return () => stop("music-box");
-  }, []);
+    if (currentRoom === "dolls") {
+      fadeIn("music-box", 2000);
+    }
+    else {
+      fadeOut("music-box", 1000)
+    }
+  }, [currentRoom, fadeIn, fadeOut]);
 
   const handleClick = (): void => {
     const willJumpscare = Math.random() < 0.3;

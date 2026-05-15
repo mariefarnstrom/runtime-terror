@@ -83,7 +83,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   fadeOut: (soundId, duration = 1000) => {
-    const { instances, masterVolume } = get();
+    const { instances } = get();
 
     const instance = instances[soundId];
 
@@ -96,9 +96,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
 
     setTimeout(() => {
       instance.howl.stop(soundIdInstance);
-
-      // Reset volume for next playback
-      instance.howl.volume(masterVolume, soundIdInstance);
+      
     }, duration);
   },
 

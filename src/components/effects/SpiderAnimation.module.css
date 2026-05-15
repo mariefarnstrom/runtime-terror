@@ -9,33 +9,45 @@
 }
 
 .spiderShadow {
-    width: 64px;
-    height: 64px;
+    width: 256px;
+    height: 256px;
 
     position: absolute;
-    bottom: 2;
+    bottom: 2px;
     left: 0;
 
     background-image: url("/assets/spider/runShadow.png");
-    background-size: 256px 256px;
     background-repeat: no-repeat;
 
-    opacity: 0.5;
-    transform: scale(1.1);
+    opacity: 0.3;
 }
 
 .spiderWrap {
     position: fixed;
-    bottom: 100px;
+    bottom: 45px;
     left: 0;
     width: 256px;
     height: 256px;
     z-index: 30;
     overflow: hidden;
-    animation: scurry 8s linear infinite;
+    animation: scurry 4s linear infinite;
+}
 
+.spiderScale {
     transform: scale(0.6);
     transform-origin: left bottom;
+}
+
+@media (min-width: 768px) {
+    .spiderWrap {
+        animation: scurry 8s linear infinite;
+    }
+}
+
+@media (min-width: 1024px) {
+    .spiderWrap {
+        animation: scurry 12s linear infinite;
+    }
 }
 
 /* Spider movements across screen */
@@ -45,15 +57,15 @@
     }
 
     25% {
-        transform: translateX(55vw) translateY(-20px);
+        transform: translateX(55vw) translateY(10px);
     }
 
     50% {
-        transform: translateX(0vw) translateY(15px);
+        transform: translateX(0vw) translateY(55px);
     }
 
     75% {
-        transform: translateX(-55vw) translateY(-4px);
+        transform: translateX(-55vw) translateY(75px);
     }
 
     100% {

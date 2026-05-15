@@ -9,18 +9,18 @@ export default function Spiders() {
   const spiderwebs = [
     {
       id: 1,
-      src: "/assets/images/web1.png",
-      className: "top-0 left-0 h-[55vh] w-auto opacity-70",
+      src: "/assets/images/spiderWeb3.png",
+      className: "top-0 right-0",
     },
     {
       id: 2,
-      src: "/assets/images/web2.png",
-      className: "top-0 right-0 h-[55vh] w-auto opacity-70",
+      src: "/assets/images/spiderWeb2.png",
+      className: "bottom-0 left-0 ",
     },
     {
       id: 3,
-      src: "/assets/images/web3.png",
-      className: "top-0 left-0 h-[55vh] w-auto opacity-70 rotate-[345deg]",
+      src: "/assets/images/spiderWeb1.png",
+      className: "bottom-0 right-0",
     },
   ];
 
@@ -40,19 +40,24 @@ export default function Spiders() {
       />
       {spiderwebs.map((web) =>
         visibleWebs.includes(web.id) ? (
-          <div key={web.id} className={`absolute ${web.className}`}>
+          <div key={web.id}
+            className={`
+            absolute z-40
+            w-[80vh] h-[80vh]
+            lg:w-[70vw] lg:h-[70vw]
+            ${web.className}`}>
             <Image
               src={web.src}
               alt="Spider web"
-              width={500}
-              height={500}
+              width={800}
+              height={800}
               className="pointer-events-none h-full w-auto"
             />
 
             <button
               aria-label="Remove spider web"
               onClick={() => removeWeb(web.id)}
-              className="absolute top-[30%] left-[30%] h-72 w-72 cursor-pointer"
+              className="absolute top-[20%] left-[20%] h-120 w-120 cursor-pointer"
             />
           </div>
         ) : null,

@@ -3,8 +3,8 @@ import { Howl, Howler } from "howler";
 import { SoundId, SOUND_MAP } from "@/lib/audio";
 
 type HowlInstance = {
-    id?: number;
-    howl: Howl;
+  id?: number;
+  howl: Howl;
 };
 
 //Defining the shape of our audio store
@@ -83,15 +83,21 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   fadeOut: (soundId, duration = 1000) => {
-    const { instances } = get()
-    const instance = instances[soundId]
-    if (!instance) return
+    const { instances } = get();
 
-    const targetVolume = SOUND_MAP[soundId].volume ?? 1
-    if (instance.id !== undefined) {
-      instance.howl.fade(targetVolume, 0, duration, instance.id)
-      instance.howl.once('fade', () => instance.howl.stop())
-    }
+    const instance = instances[soundId];
+
+    if (!instance || instance.id === undefined) return;
+
+    const soundIdInstance = instance.id;
+
+    const targetVolume = SOUND_MAP[soundId].volume ?? 1;
+    instance.howl.fade(targetVolume, 0, duration, soundIdInstance);
+
+    setTimeout(() => {
+      instance.howl.stop(soundIdInstance);
+      
+    }, duration);
   },
 
   crossfade: (from, to, duration = 1500) => {
@@ -102,7 +108,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   setMuted: (muted) => {
-    Howler.mute(muted)  
+    Howler.mute(muted)
     set({ isMuted: muted })
   },
 

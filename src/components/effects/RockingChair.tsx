@@ -5,11 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
 import { useGameStore } from "@/store/useGameStore";
+import type { SoundId } from "@/lib/audio";
 
-const phrases = [
-  "I've been waiting for you...",
-  "Do you want to play?",
-  "Don't leave me alone...",
+const phrases: { text: string; audio: SoundId }[] = [
+  {
+    text: "I've been waiting for you...",
+    audio: "dolltalk-waiting",
+  },
+  {
+    text: "Do you want to play?",
+    audio: "dolltalk-play",
+  },
+  {
+    text: "Don't leave me alone...",
+    audio: "dolltalk-alone",
+  },
 ];
 
 export default function RockingChair() {
@@ -22,23 +32,31 @@ export default function RockingChair() {
   useEffect(() => {
     if (currentRoom === "dolls") {
       fadeIn("music-box", 2000);
-    }
-    else {
-      fadeOut("music-box", 1000)
+    } else {
+      fadeOut("music-box", 1000);
     }
   }, [currentRoom, fadeIn, fadeOut]);
 
   const handleClick = (): void => {
+    if (isTalking || isJumpscare) return;
+
     const willJumpscare = Math.random() < 0.3;
 
     if (willJumpscare) {
       play("loud-jumpscare");
+
       setIsJumpscare(true);
+
       setTimeout(() => setIsJumpscare(false), 1000);
     } else {
-      play("doll-laugh");
-      setCurrentPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+      setCurrentPhrase(randomPhrase.text);
+
+      play(randomPhrase.audio);
+
       setIsTalking(true);
+
       setTimeout(() => setIsTalking(false), 3000);
     }
   };

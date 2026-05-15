@@ -32,12 +32,14 @@ export default function Spiders() {
 
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover bg-bottom">
-      <DoorTransition
-        buttonText="Do you dare?"
-        doorImage=""
-        animated={false}
-        positionClass="bottom-1/3 right-15"
-      />
+      {visibleWebs.length === 0 && (
+        <DoorTransition
+          buttonText="Do you dare?"
+          doorImage=""
+          animated={false}
+          positionClass="bottom-1/3 right-15"
+        />
+      )}
       {spiderwebs.map((web) =>
         visibleWebs.includes(web.id) ? (
           <div key={web.id}

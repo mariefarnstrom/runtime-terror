@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function HelpOverlay() {
   const [isOpen, setIsOpen] = useState(false);
+  const isTivoliMode = process.env.NEXT_PUBLIC_TIVOLI_MODE === "true";
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -56,28 +57,39 @@ export default function HelpOverlay() {
                 How to play
               </h2>
               <div className="flex flex-col gap-3">
-                <p className="font-fell text-grey">
-                  Click on the Enter house for 3€ button to use your token and
-                  enter the haunted house.
-                </p>
+                {isTivoliMode ? (
+                  <div className="flex flex-col gap-3">
+                    <p className="font-fell text-grey">
+                      Click on the Pay Entry Fee button to use your token and
+                      enter the haunted house.
+                    </p>
+                    <p className="font-fell text-grey">
+                      You will get your stamp at the end before you leave
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <p className="font-fell text-grey">
+                      Click on the Enter if you dare button to enter the haunted
+                      house.
+                    </p>
+                  </div>
+                )}
+                <div className="flex flex-col gap-3">
+                  <p className="font-fell text-grey">
+                    Make your way through each room by following the
+                    instructions, and see how scared you really are.
+                  </p>
 
-                <p className="font-fell text-grey">
-                  Make your way through each room by following the instructions,
-                  and see how scared you really are.
-                </p>
+                  <p className="font-fell text-grey">
+                    Click on objects to interact with them.
+                  </p>
 
-                <p className="font-fell text-grey">
-                  Click on objects to interact with them.
-                </p>
-
-                <p className="font-fell text-grey">
-                  If you can't handle the horror you can always leave by
-                  clicking on the exit button at the bottom of the page.
-                </p>
-
-                <p className="font-fell text-grey">
-                  You will get your stamp at the end before you leave
-                </p>
+                  <p className="font-fell text-grey">
+                    If you can't handle the horror you can always leave by
+                    clicking on the exit button at the bottom of the page.
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>

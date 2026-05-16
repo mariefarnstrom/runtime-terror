@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import SpiderAnimation from "@/components/effects/SpiderAnimation";
 import DoorTransition from "@/components/shared/DoorTransition";
+import DescriptionButton from "@/components/shared/DescriptionButton";
 
 export default function Spiders() {
   const spiderwebs = [
@@ -42,12 +43,14 @@ export default function Spiders() {
       )}
       {spiderwebs.map((web) =>
         visibleWebs.includes(web.id) ? (
-          <div key={web.id}
+          <div
+            key={web.id}
             className={`
             absolute z-40
             w-[80vh] h-[80vh]
             lg:w-[70vw] lg:h-[70vw]
-            ${web.className}`}>
+            ${web.className}`}
+          >
             <Image
               src={web.src}
               alt="Spider web"
@@ -65,6 +68,7 @@ export default function Spiders() {
         ) : null,
       )}
       <SpiderAnimation />
+      <DescriptionButton description="Remove all the spider webs to proceed. But beware — you are not alone..." />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import DoorButton from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 import RockingChair from "@/components/effects/RockingChair";
 import DoorTransition from "@/components/shared/DoorTransition";
+import DescriptionButton from "@/components/shared/DescriptionButton";
 
 export default function Dolls() {
   //Example of how to use the useEffectSounds hook
@@ -37,6 +38,7 @@ export default function Dolls() {
         buttonText="Go further"
         doorImage="/assets/images/cellar-door.png"
       />
+      <DescriptionButton description="Click on the doll to make it speak. Listen carefully — or you might miss something important." />
     </div>
   );
 }

@@ -24,6 +24,7 @@ const phrases: { text: string; audio: SoundId }[] = [
 
 export default function RockingChair() {
   const [isTalking, setIsTalking] = useState(false);
+  const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
   const { play, fadeIn, fadeOut, stop } = useAudioStore();
@@ -40,7 +41,7 @@ export default function RockingChair() {
   const handleClick = (): void => {
     if (isTalking || isJumpscare) return;
 
-    const willJumpscare = Math.random() < 0.3;
+    const willJumpscare = hasTalked && Math.random() < 0.3;
 
     if (willJumpscare) {
       play("loud-jumpscare");
@@ -50,13 +51,10 @@ export default function RockingChair() {
       setTimeout(() => setIsJumpscare(false), 1000);
     } else {
       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-
       setCurrentPhrase(randomPhrase.text);
-
       play(randomPhrase.audio);
-
       setIsTalking(true);
-
+      setHasTalked(true); // Mark that doll has talked at least once
       setTimeout(() => setIsTalking(false), 3000);
     }
   };

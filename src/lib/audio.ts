@@ -120,7 +120,7 @@ export const SOUND_MAP = {
     src: ["/assets/audio/effect/music-box.wav"],
     loop: true,
     volume: 0.5,
-    autoplay: true,
+    autoplay: false, // Handled manually in RockingChair
   },
   "doll-laugh": {
     kind: "effect",

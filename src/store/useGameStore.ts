@@ -3,11 +3,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAudioStore } from "@/store/useAudioStore";
+import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
+import { SoundId } from "@/lib/audio";
 
+export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
-export type RoomId = 'graveyard' | 'dolls' | 'spiders' | 'clown'
-
-export const ROOMS: RoomId[] = ['graveyard', 'dolls', 'spiders', 'clown']
+export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
 interface GameStore {
   //state
@@ -25,7 +26,7 @@ export const useGameStore = create<GameStore>()(
   persist(
     (set, get) => ({
       // Start values
-      currentRoom: 'graveyard',
+      currentRoom: "graveyard",
       fearLevel: 0,
       isComplete: false,
 
@@ -33,8 +34,27 @@ export const useGameStore = create<GameStore>()(
       goToNextRoom: () => {
         const { currentRoom } = get();
         const nextIndex = ROOMS.indexOf(currentRoom) + 1;
+
         if (nextIndex < ROOMS.length) {
-          set({ currentRoom: ROOMS[nextIndex] });
+          const nextRoom = ROOMS[nextIndex];
+          const nextAmbient = ROOM_AMBIENT[nextRoom];
+
+          // Fade out all sounds except the next room's ambient
+          const { instances } = useAudioStore.getState();
+          const currentAmbient = useAudioStore.getState().currentAmbient;
+
+          Object.entries(instances).forEach(([soundId, instance]) => {
+            // Skip current and next ambient — handled by crossfade
+            if (soundId === currentAmbient || soundId === nextAmbient) return;
+            if (instance?.id !== undefined) {
+              const config = SOUND_MAP[soundId as SoundId];
+              const targetVolume = config.volume ?? 1;
+              instance.howl.fade(targetVolume, 0, 1000, instance.id);
+              instance.howl.once("fade", () => instance.howl.stop());
+            }
+          });
+
+          set({ currentRoom: nextRoom });
         } else {
           set({ isComplete: true });
           const currentAmbient = useAudioStore.getState().currentAmbient;
@@ -52,14 +72,13 @@ export const useGameStore = create<GameStore>()(
           useAudioStore.getState().stop(currentAmbient);
         }
         set({
-          currentRoom: 'graveyard',
+          currentRoom: "graveyard",
           isComplete: false,
         });
       },
     }),
     {
       name: "haunted-house-room",
-
-    }
-  )
+    },
+  ),
 );

@@ -5,23 +5,30 @@ import { useAudioStore } from "@/store/useAudioStore";
 import { useGameStore } from "@/store/useGameStore";
 
 export default function Dolls() {
-  //Example of how to use the useEffectSounds hook
-  /* const trigger = useEffectSounds({ effect: "jumpscare-piano" }); */
-  const { play } = useAudioStore();
+  const { play, stop } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
 
   useEffect(() => {
-    if (currentRoom !== "dolls") return;
+    if (currentRoom !== "dolls") {
+      useAudioStore.getState().instances["doll-laugh"]?.howl.stop();
+      return;
+    }
 
-    const interval = setInterval(() => {
-      const shouldPlay = Math.random() < 0.4;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
-      if (shouldPlay) {
-        play("doll-laugh");
-      }
-    }, 15000);
+    const initialDelay = setTimeout(() => {
+      interval = setInterval(() => {
+        const shouldPlay = Math.random() < 0.4;
+        if (shouldPlay) play("doll-laugh");
+      }, 15000);
+    }, 10000);
 
-    return () => clearInterval(interval);
+    // Cleanup — runs when currentRoom changes or component unmounts
+    return () => {
+      clearTimeout(initialDelay);
+      if (interval) clearInterval(interval);
+      useAudioStore.getState().instances["doll-laugh"]?.howl.stop();
+    };
   }, [currentRoom, play]);
 
   return (

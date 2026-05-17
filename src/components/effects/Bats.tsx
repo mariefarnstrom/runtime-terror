@@ -10,6 +10,7 @@ interface BatProps {
   animateY: string[];
   duration: number;
   depth: number; // 0 = far away, 1 = close
+  flapDelay: number;
 }
 
 function Bat({
@@ -19,13 +20,12 @@ function Bat({
   animateY,
   duration,
   depth,
+  flapDelay,
 }: BatProps) {
   // Scale between 0.3 (far) and 1.2 (close)
   const scale = 0.3 + depth * 0.9;
   // Opacity between 0.4 (far) and 1 (close)
   const opacity = 0.4 + depth * 0.6;
-  // Random delay between 0 and 0.6s (one full flap cycle)
-  const flapDelay = Math.random() * 0.6;
 
   return (
     <motion.div
@@ -38,7 +38,12 @@ function Bat({
         transformOrigin: "top left",
       }}
       animate={{ x: animateX, y: animateY, scale }}
-      transition={{ duration, repeat: Infinity, ease: "linear" }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        repeatDelay: 4,
+        ease: "linear",
+      }}
     >
       <BatSprite flapDelay={flapDelay} />
     </motion.div>
@@ -55,8 +60,9 @@ export default function Bats() {
         startY="0%"
         animateX={["-200px", "110vw"]}
         animateY={["400px", "-200px"]}
-        duration={4}
+        duration={2}
         depth={1.2}
+        flapDelay={0.3}
       />
 
       <Bat
@@ -65,8 +71,9 @@ export default function Bats() {
         startY="0%"
         animateX={["-200px", "110vw"]}
         animateY={["320px", "-280px"]}
-        duration={5}
+        duration={1.5}
         depth={0.3}
+        flapDelay={0.2}
       />
 
       <Bat
@@ -75,8 +82,9 @@ export default function Bats() {
         startY="0%"
         animateX={["-200px", "110vw"]}
         animateY={["450px", "-150px"]}
-        duration={6}
+        duration={1.8}
         depth={0.5}
+        flapDelay={0.1}
       />
     </div>
   );

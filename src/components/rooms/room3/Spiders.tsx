@@ -68,7 +68,6 @@ export default function Spiders() {
         ) : null,
       )}
       <SpiderAnimation />
-      <DescriptionButton description="Remove all the spider webs to proceed. But beware — you are not alone..." />
     </div>
   );
 }

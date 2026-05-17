@@ -38,7 +38,6 @@ export default function Dolls() {
         buttonText="Go further"
         doorImage="/assets/images/cellar-door.png"
       />
-      <DescriptionButton description="Click on the doll to make it speak. Listen carefully — or you might miss something important." />
     </div>
   );
 }

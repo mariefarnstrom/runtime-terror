@@ -8,11 +8,16 @@ export type SoundId =
   | "ghostly-effect"
   | "danger"
   | "creaking-gate"
+  | "creaking-door"
   | "jumpscare"
   | "jumpscare-piano"
   | "loud-jumpscare"
   | "music-box"
-  | "doll-laugh";
+  | "doll-laugh"
+  | "dolltalk-play"
+  | "dolltalk-waiting"
+  | "dolltalk-alone"
+  | "key-appearing";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -82,6 +87,13 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
+  "creaking-door": {
+    kind: "effect",
+    src: ["/assets/audio/effect/dooropen-creaks.wav"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
   jumpscare: {
     kind: "effect",
     src: ["/assets/audio/effect/jumpscare.mp3"],
@@ -108,13 +120,41 @@ export const SOUND_MAP = {
     src: ["/assets/audio/effect/music-box.wav"],
     loop: true,
     volume: 0.5,
-    autoplay: true,
+    autoplay: false, // Handled manually in RockingChair
   },
   "doll-laugh": {
     kind: "effect",
     src: ["/assets/audio/effect/creepy-girl-laugh.wav"],
     loop: false,
     volume: 0.7,
+    autoplay: false,
+  },
+  "dolltalk-play": {
+    kind: "effect",
+    src: ["/assets/audio/effect/dolltalk-play.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "dolltalk-waiting": {
+    kind: "effect",
+    src: ["/assets/audio/effect/dolltalk-waiting.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "dolltalk-alone": {
+    kind: "effect",
+    src: ["/assets/audio/effect/dolltalk-alone.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "key-appearing": {
+    kind: "effect",
+    src: ["/assets/audio/effect/key-glitter.flac"],
+    loop: false,
+    volume: 0.3,
     autoplay: false,
   },
 } as const satisfies Record<SoundId, SoundConfig>;

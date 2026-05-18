@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import SpiderAnimation from "@/components/effects/SpiderAnimation";
 import DoorTransition from "@/components/shared/DoorTransition";
-import DescriptionButton from "@/components/shared/DescriptionButton";
+import SpiderDrop from "@/components/effects/SpiderDrop";
 
 export default function Spiders() {
   const spiderwebs = [
@@ -31,9 +31,11 @@ export default function Spiders() {
     setVisibleWebs((prev) => prev.filter((w) => w !== id));
   };
 
+  const allWebsRemoved = visibleWebs.length === 0;
+
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover bg-bottom">
-      {visibleWebs.length === 0 && (
+      {allWebsRemoved && (
         <DoorTransition
           buttonText="Do you dare?"
           doorImage=""
@@ -68,6 +70,7 @@ export default function Spiders() {
         ) : null,
       )}
       <SpiderAnimation />
+      <SpiderDrop allWebsRemoved={allWebsRemoved} />
     </div>
   );
 }

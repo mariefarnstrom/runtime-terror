@@ -10,6 +10,7 @@ import HelpOverlay from "@/components/shared/HelpOverlay";
 import { useUrlParams } from "@/hooks/useUrlParams";
 import { UnauthorizedModal } from "@/components/shared/UnauthorizedModal";
 import { useTransaction } from "@/hooks/useTransaction";
+import MuteButton from "../ui/MuteButton";
 
 export default function HomeClient() {
   const router = useRouter();
@@ -55,6 +56,8 @@ export default function HomeClient() {
       <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover bg-bottom" />
       <Bats />
       <Fog />
+
+      <MuteButton positionClass="right-4" />
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full items-center">

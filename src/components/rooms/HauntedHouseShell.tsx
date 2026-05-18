@@ -5,6 +5,7 @@ import { useGameStore } from "@/store/useGameStore";
 import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
 import Link from "next/link";
+import MuteButton from "../ui/MuteButton";
 
 type HauntedHouseShellProps = {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export default function HauntedHouseShell({
       {children}
 
       <DescriptionButton currentRoom={currentRoom} />
+      <MuteButton positionClass="right-14" />
 
       <Link
         href="/"

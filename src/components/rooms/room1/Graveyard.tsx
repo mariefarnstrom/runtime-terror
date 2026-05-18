@@ -1,25 +1,29 @@
 "use client";
 import Fog from "@/components/effects/Fog";
 import DoorTransition from "@/components/shared/DoorTransition";
-import Image from "next/image";
+import ZombieHand from "@/components/rooms/room1/ZombieHand";
+import { useState } from "react";
 
 export default function Graveyard() {
+  const [doorOpen, setDoorOpen] = useState(false);
+
+  function handleDoorOpen() {
+    setDoorOpen(true);
+  }
+
   return (
-    <div className="absolute inset-0 bg-[url('/assets/images/graveyard-night.png')] bg-cover bg-top-left">
+    <div className="absolute inset-0 bg-[url('/assets/images/graveyard-night.png')] bg-cover bg-position-[center_left_-250px] md:bg-center">
       {/* <DoorButton buttonText="Enter the house" /> */}
       <Fog />
       <DoorTransition
-        buttonText="Open the door"
+        buttonText="Enter the house"
         doorImage="/assets/images/wooden-door.png"
-        positionClass="bottom-120 left-1/2 -translate-x-1/2"
+        positionClass="bottom-90 right-10"
+        sizeClass="h-40 w-24"
       />
-      <Image
-        src="/assets/images/zombie-hand.png"
-        alt="Zombie Hand"
-        width={200}
-        height={200}
-        className="absolute bottom-15 right-15 skew-2"
-      />
+      <ZombieHand 
+      triggerOnMount={true}
+      onEmergeComplete={handleDoorOpen} />
     </div>
   );
 }

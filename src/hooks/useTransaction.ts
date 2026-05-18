@@ -33,7 +33,7 @@ export function useTransaction({
       const transaction: Transaction = {
         identity_token: identityToken,
         amount: ENTRY_PRICE,
-        amusement_uuid: process.env.NEXT_PUBLIC_SELLER || "default-seller",
+        api_key: process.env.NEXT_PUBLIC_API_KEY || "default-seller",
       };
 
       const res = await fetch("/api/transaction", {

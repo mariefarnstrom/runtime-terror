@@ -1,4 +1,3 @@
-//Zustand state to switch between the different rooms
 "use client";
 
 import { RoomId, useGameStore } from "@/store/useGameStore";

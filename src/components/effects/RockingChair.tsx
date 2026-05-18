@@ -17,10 +17,10 @@ export default function RockingChair() {
   const [currentPhrase, setCurrentPhrase] = useState("");
   const { play, fadeIn, stop } = useAudioStore();
 
-  useEffect(() => {
-    fadeIn("music-box", 2000);
-    return () => stop("music-box");
-  }, []);
+  // useEffect(() => {
+  //   fadeIn("music-box", 2000);
+  //   return () => stop("music-box");
+  // }, []);
 
   const handleClick = (): void => {
     const willJumpscare = Math.random() < 0.3;

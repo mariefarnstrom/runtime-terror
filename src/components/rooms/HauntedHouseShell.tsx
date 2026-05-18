@@ -1,19 +1,26 @@
-'use client'
+"use client";
 
-import { useAmbientSound } from '@/hooks/useAmbientSound'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useAmbientSound } from "@/hooks/useAmbientSound";
+import { useGameStore } from "@/store/useGameStore";
+import DescriptionButton from "@/components/shared/DescriptionButton";
+import Image from "next/image";
+import Link from "next/link";
 
 type HauntedHouseShellProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-export default function HauntedHouseShell({ children }: HauntedHouseShellProps) {
+export default function HauntedHouseShell({
+  children,
+}: HauntedHouseShellProps) {
   useAmbientSound();
+  const currentRoom = useGameStore((s) => s.currentRoom);
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden position-relative">
       {children}
+
+      <DescriptionButton currentRoom={currentRoom} />
 
       <Link
         href="/"
@@ -29,5 +36,5 @@ export default function HauntedHouseShell({ children }: HauntedHouseShellProps) 
         />
       </Link>
     </div>
-  )
+  );
 }

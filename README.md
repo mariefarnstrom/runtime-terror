@@ -1,38 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Runtime Terror
+
+A haunted house attraction built for the Yrgo Tivoli project. Enter if you dare — make your way through four rooms of horrors and see how scared you really are.
+
+## Rooms
+
+- **The Graveyard** — Your journey begins outside. The dead don't always stay buried.
+- **The Doll Room** — Something is rocking in the corner. Click on it. It wants to talk to you.
+- **The Spider Room** — Clear the webs to find your way out. But you are not alone.
+- **The Clown Room** — He sees you. And he is getting closer.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) — App Router
+- [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) — styling
+- [CSS Modules](https://github.com/css-modules/css-modules) — sprite animations
+- [Framer Motion](https://www.framer.com/motion/) — animations and transitions
+- [Howler.js](https://howlerjs.com/) — audio management
+- [Zustand](https://zustand-demo.pmnd.rs/) — global state management
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── access/
+│   │   │   └── route.ts          # Dev access cookie endpoint
+│   │   └── transaction/
+│   │       └── route.ts          # Transaction API route
+│   ├── haunted-house/
+│   │   ├── end/
+│   │   │   └── page.tsx          # End screen
+│   │   ├── layout.tsx            # Haunted house layout
+│   │   └── page.tsx              # Main game — handles room state
+│   ├── favicon.ico
+│   ├── globals.css               # Global styles and Tailwind directives
+│   ├── layout.tsx                # Root layout — fonts and providers
+│   ├── not-found.tsx             # 404 page
+│   └── page.tsx                  # Home page — wraps HomeClient in Suspense
+├── components/
+│   ├── effects/                  # Animations and visual effects
+│   │   ├── Bats.tsx
+│   │   ├── BatSprite.module.css
+│   │   ├── BatSprite.tsx
+│   │   ├── Filmgrain.tsx
+│   │   ├── Fog.tsx
+│   │   ├── RockingChair.tsx
+│   │   ├── SpiderAnimation.module.css
+│   │   └── SpiderAnimation.tsx
+│   ├── home-page/                # Home page components
+│   │   ├── enter-form.tsx        # Entry form with payment
+│   │   └── home-client.tsx       # Home page logic and layout
+│   ├── rooms/                    # One component per room
+│   │   ├── room1/Graveyard.tsx
+│   │   ├── room2/Dolls.tsx
+│   │   ├── room3/Spiders.tsx
+│   │   ├── room4/Clown.tsx
+│   │   ├── HauntedHouseShell.tsx # Shared room shell and layout
+│   │   └── RoomWrapper.tsx       # Wraps each room with shared logic
+│   ├── shared/                   # Shared components
+│   │   ├── DoorTransition.tsx    # Animated door between rooms
+│   │   ├── HelpOverlay.tsx       # Global help overlay
+│   │   └── UnauthorizedModal.tsx # Modal for 401 errors
+│   └── ui/                       # Generic UI components
+│       └── CustomCursor.tsx
+├── hooks/                        # Custom React hooks
+│   ├── useAmbientSound.ts        # Handles ambient sound per room
+│   ├── useEffectSounds.ts        # Handles effect sounds
+│   ├── useTransaction.ts         # Handles payment flow
+│   └── useUrlParams.ts           # Reads identity token from URL
+├── lib/                          # Utility functions and configuration
+│   ├── accessCookie.ts           # Dev access cookie logic
+│   ├── audio.ts                  # Sound map and audio configuration
+│   ├── cookie.ts                 # Cookie utilities
+│   ├── fetcher.ts                # Fetch wrapper
+│   ├── gameConfig.ts             # Game configuration
+│   ├── parseError.ts             # Error parsing utilities
+│   ├── payment.ts                # Payment logic
+│   └── rooms.ts                  # Room configuration
+├── store/
+│   ├── useAudioStore.ts          # Audio state management
+│   └── useGameStore.ts           # Room progression and game state
+└── types/
+    ├── errors.ts                 # Error types
+    └── index.ts                  # Shared TypeScript types and interfaces
+```
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file based on `.env.example`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+NEXT_PUBLIC_TIVOLI_MODE=false       # Set to true when connected to the main tivoli
+NEXT_PUBLIC_ENTRY_PRICE=3           # Entry fee in euros
+NEXT_PUBLIC_API_KEY=                # Your attraction API key — get it from the centralbank after registering your amusement
+```
 
-## Learn More
+## Centralbank Integration
 
-To learn more about Next.js, take a look at the following resources:
+Runtime Terror is built as an attraction for the Yrgo Tivoli. When `NEXT_PUBLIC_TIVOLI_MODE` is set to `true`, the attraction integrates with the centralbank API.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The centralbank handles all user authentication — no login is built into the attraction itself. Users log in to the main tivoli site and are redirected to the attraction with a short-lived `identity_token` in the URL:
 
-## Deploy on Vercel
+```
+https://runtime-terror.vercel.app/?identity_token=<token>
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The token is read from the URL and immediately removed with `history.replaceState`. It is valid for 5 minutes and can only be used once.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### User Flow
 
-.
+1. User logs in to the main tivoli site with their name and access key
+2. Tivoli redirects the user to the attraction with an `identity_token` in the URL
+3. The attraction reads and removes the token from the URL
+4. _(Optional)_ `GET /identity-tokens/{token}` — fetch user details to greet the player. Does not consume the token
+5. User pays the entrance fee: `POST /transactions` with `{ identity_token, amount, api_key }` — token is consumed and a stamp is returned
+6. The haunted house experience runs
+7. On completion the user receives their stamp
+
+### API Endpoints
+
+| Method | Endpoint                    | Body                                  | Notes                            |
+| ------ | --------------------------- | ------------------------------------- | -------------------------------- |
+| `GET`  | `/identity-tokens/{token}`  | —                                     | Optional, does not consume token |
+| `POST` | `/transactions`             | `{ identity_token, amount, api_key }` | Consumes token, returns stamp    |
+| `POST` | `/transactions/{id}/payout` | `{ amount }`                          | For games with winnings          |
+
+### Error Handling
+
+On `401` (expired or already used token) the user is shown a clear error message with a link back to the main tivoli site.
+
+## Group
+
+Built by [Marie Färnström], [Patricia Loayza Frykberg] and [Malin Persson] as part of the Yrgo WU25 Tivoli project.

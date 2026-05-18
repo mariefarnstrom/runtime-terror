@@ -1,6 +1,5 @@
 import { ApiError } from '@/types/errors'
 import { parseError } from '@/lib/parseError'
-import { headers } from 'next/headers';
 
 export type ApiResult<T> =
   | { success: true; data: T }
@@ -13,15 +12,14 @@ export async function fetcher<T>(
   options?: RequestInit
 ): Promise<ApiResult<T>> {
   try {
-    const res = await fetch(url, { 
+    const res = await fetch(url, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.NEXT_PUBLIC_ACCESS_KEY || '',
         ...options?.headers, // Allow overriding headers if needed
       }
     });
-    
+
     const data = await res.json();
 
     if (!res.ok) {

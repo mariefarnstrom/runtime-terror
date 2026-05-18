@@ -1,9 +1,9 @@
 import { PaymentError, ApiError } from "./errors";
 
 export type Transaction = {
-    identity_token: string;
-    amount: number;
-    amusement_uuid: string;
+  identity_token: string;
+  amount: number;
+  api_key: string;
 };
 
 export type PaymentResponse = {
@@ -18,6 +18,6 @@ export interface PaymentResult {
 }
 
 export interface ApiResponse<T> {
-    data: T | null;
-    error: ApiError | null;
+  data: T | null;
+  error: ApiError | null;
 }

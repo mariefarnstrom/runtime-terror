@@ -17,7 +17,8 @@ export type SoundId =
   | "dolltalk-play"
   | "dolltalk-waiting"
   | "dolltalk-alone"
-  | "key-appearing";
+  | "key-appearing"
+  | "clown-laugh";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -155,6 +156,13 @@ export const SOUND_MAP = {
     src: ["/assets/audio/effect/key-glitter.flac"],
     loop: false,
     volume: 0.3,
+    autoplay: false,
+  },
+  "clown-laugh": {
+    kind: "effect",
+    src: ["/assets/audio/effect/clown-laugh.wav"],
+    loop: false,
+    volume: 0.5,
     autoplay: false,
   },
 } as const satisfies Record<SoundId, SoundConfig>;

@@ -14,7 +14,9 @@ export default function Graveyard() {
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/graveyard-night.png')] bg-cover bg-position-[center_left_-250px] md:bg-center">
       {/* <DoorButton buttonText="Enter the house" /> */}
-      <Fog />
+      <Fog 
+        opacity={0.6}
+      />
       <DoorTransition
         buttonText="Enter the house"
         doorImage="/assets/images/wooden-door.png"

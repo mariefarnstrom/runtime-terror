@@ -16,11 +16,11 @@ const handVariants: Variants = {
     opacity: 0,
   },
   emerge: {
-    y: [160, 140, 90, 60, 50, 40, 10],
-    rotate: [-8, -8, -12, -6, -6, -6, -6],
+    y: [160, 140, 90, 60, 50, 40, 12],
+    rotate: [-8, -8, -12, -6, -6, -2, +2],
     opacity: [0, 1, 1, 1, 1, 1, 1],
     transition: {
-      duration: 3.2,
+      duration: 4.2,
       ease: "easeInOut",
       times: [0, 0.3, 0.45, 0.7, 0.85, 0.9, 1],
     },

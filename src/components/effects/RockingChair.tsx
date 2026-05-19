@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
@@ -27,8 +27,16 @@ export default function RockingChair() {
   const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const { play, fadeIn, fadeOut, stop } = useAudioStore();
+  const { play, fadeIn, fadeOut } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
+  const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    return () => {
+      pendingTimeoutsRef.current.forEach(clearTimeout);
+      pendingTimeoutsRef.current = [];
+    };
+  }, []);
 
   useEffect(() => {
     if (currentRoom === "dolls") {
@@ -48,14 +56,16 @@ export default function RockingChair() {
 
       setIsJumpscare(true);
 
-      setTimeout(() => setIsJumpscare(false), 1000);
+      const timeoutId = setTimeout(() => setIsJumpscare(false), 1000);
+      pendingTimeoutsRef.current.push(timeoutId);
     } else {
       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
       setCurrentPhrase(randomPhrase.text);
       play(randomPhrase.audio);
       setIsTalking(true);
       setHasTalked(true); // Mark that doll has talked at least once
-      setTimeout(() => setIsTalking(false), 3000);
+      const timeoutId = setTimeout(() => setIsTalking(false), 3000);
+      pendingTimeoutsRef.current.push(timeoutId);
     }
   };
 

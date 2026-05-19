@@ -69,19 +69,30 @@ export const useGameStore = create<GameStore>()(
           set({ currentRoom: nextRoom });
         } else {
           set({ isComplete: true });
+          // Fade out and unload all audio when the game completes to free resources
           const currentAmbient = useAudioStore.getState().currentAmbient;
           if (currentAmbient) {
             useAudioStore.getState().fadeOut(currentAmbient, 2000);
           }
+          // ensure all Howl instances are unloaded after a short delay
+          setTimeout(() => {
+            try {
+              useAudioStore.getState().unloadAll();
+            } catch (err) {
+              // ignore
+            }
+          }, 2200);
         }
       },
 
       completeGame: () => set({ isComplete: true }),
 
       resetGame: () => {
-        const currentAmbient = useAudioStore.getState().currentAmbient;
-        if (currentAmbient) {
-          useAudioStore.getState().stop(currentAmbient);
+        // unload all audio resources when resetting
+        try {
+          useAudioStore.getState().unloadAll();
+        } catch (err) {
+          // ignore
         }
         set({
           currentRoom: "graveyard",

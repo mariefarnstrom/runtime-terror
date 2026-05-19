@@ -12,8 +12,15 @@ export async function fetcher<T>(
   options?: RequestInit
 ): Promise<ApiResult<T>> {
   try {
-    const res = await fetch(url, options)
-    const data = await res.json()
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers, // Allow overriding headers if needed
+      }
+    });
+
+    const data = await res.json();
 
     if (!res.ok) {
       return {

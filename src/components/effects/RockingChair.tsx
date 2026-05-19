@@ -4,35 +4,57 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
+import { useGameStore } from "@/store/useGameStore";
+import type { SoundId } from "@/lib/audio";
 
-const phrases = [
-  "I've been waiting for you...",
-  "Do you want to play?",
-  "Don't leave me alone...",
+const phrases: { text: string; audio: SoundId }[] = [
+  {
+    text: "I've been waiting for you...",
+    audio: "dolltalk-waiting",
+  },
+  {
+    text: "Do you want to play?",
+    audio: "dolltalk-play",
+  },
+  {
+    text: "Don't leave me alone...",
+    audio: "dolltalk-alone",
+  },
 ];
 
 export default function RockingChair() {
   const [isTalking, setIsTalking] = useState(false);
+  const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const { play, fadeIn, stop } = useAudioStore();
+  const { play, fadeIn, fadeOut, stop } = useAudioStore();
+  const currentRoom = useGameStore((s) => s.currentRoom);
 
   useEffect(() => {
-    fadeIn("music-box", 2000);
-    return () => stop("music-box");
-  }, []);
+    if (currentRoom === "dolls") {
+      fadeIn("music-box", 2000);
+    } else {
+      fadeOut("music-box", 1000);
+    }
+  }, [currentRoom, fadeIn, fadeOut]);
 
   const handleClick = (): void => {
-    const willJumpscare = Math.random() < 0.3;
+    if (isTalking || isJumpscare) return;
+
+    const willJumpscare = hasTalked && Math.random() < 0.3;
 
     if (willJumpscare) {
       play("loud-jumpscare");
+
       setIsJumpscare(true);
+
       setTimeout(() => setIsJumpscare(false), 1000);
     } else {
-      play("doll-voice");
-      setCurrentPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+      setCurrentPhrase(randomPhrase.text);
+      play(randomPhrase.audio);
       setIsTalking(true);
+      setHasTalked(true); // Mark that doll has talked at least once
       setTimeout(() => setIsTalking(false), 3000);
     }
   };
@@ -59,7 +81,7 @@ export default function RockingChair() {
       </AnimatePresence>
 
       <motion.div
-        className="absolute bottom-15 left-1/2 -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-15 left-1/3 -translate-x-1/2 cursor-pointer z-20"
         animate={{ rotate: [-3, 3, -3] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
         style={{ originY: 1 }}

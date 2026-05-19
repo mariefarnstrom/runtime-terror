@@ -36,3 +36,13 @@ body {
 .paused * {
   animation-play-state: paused !important;
 }
+
+@keyframes bounce-diagonal {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(10px);
+  }
+}

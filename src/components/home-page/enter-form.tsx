@@ -1,7 +1,9 @@
 "use client";
 
+import { PaymentResponse } from "@/types";
+
 type EnterFormProps = {
-  onSubmit: (identityToken: string) => Promise<void>;
+  onSubmit: (identityToken: string) => Promise<PaymentResponse | null>;
   identityToken: string | null;
   isLoading: boolean;
 };

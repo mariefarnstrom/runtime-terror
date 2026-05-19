@@ -19,12 +19,12 @@ export function useTransaction({
 }: UseTransactionOptions = {}) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const submitTransaction = async (identityToken: string) => {
+  const submitTransaction = async (identityToken: string): Promise<PaymentResponse | null> => {
     if (!identityToken) {
       onError?.({
         message: "Missing identity token",
       });
-      return;
+      return null;
     }
 
     setIsLoading(true);
@@ -33,7 +33,7 @@ export function useTransaction({
       const transaction: Transaction = {
         identity_token: identityToken,
         amount: ENTRY_PRICE,
-        api_key: process.env.NEXT_PUBLIC_API_KEY || "default-seller",
+        api_key: process.env.API_KEY || "default-seller",
       };
 
       const res = await fetch("/api/transaction", {
@@ -48,7 +48,7 @@ export function useTransaction({
 
       if (res.status === 401) {
         onUnauthorized?.();
-        return;
+        return null;
       }
 
       if (!res.ok) {
@@ -56,12 +56,12 @@ export function useTransaction({
           message: data.error?.message ?? "Payment failed",
           status: res.status,
         });
-        return;
+        return null;
       }
 
       if (data.success) {
         onSuccess?.();
-        return;
+        return data;
       }
 
       onError?.({
@@ -75,6 +75,7 @@ export function useTransaction({
     } finally {
       setIsLoading(false);
     }
+    return null;
   };
 
   return {

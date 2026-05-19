@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DoorTransition from "@/components/shared/DoorTransition";
-import { useAudioStore } from "@/store/useAudioStore";
+import { useEffectSounds } from "@/hooks/useEffectSounds";
 
 type Balloon = {
   id: number;
@@ -11,108 +11,169 @@ type Balloon = {
   y: number;
 };
 
+type Phase = "intro" | "playing" | "clown" | "done";
+
+const INTRO_TEXT =
+  "Pop the balloons before they disappear — or he gets closer.";
+
+function IntroText({ onComplete }: { onComplete: () => void }) {
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayed(INTRO_TEXT.slice(0, i + 1));
+      i++;
+      if (i >= INTRO_TEXT.length) {
+        clearInterval(interval);
+        setTimeout(onComplete, 1500);
+      }
+    }, 50);
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
+  return (
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 flex items-center justify-center font-fell text-grey text-2xl text-center px-12"
+    >
+      {displayed}
+    </motion.p>
+  );
+}
+
 const MAX_MISSED = 5; // Clown fills screen after 5 missed balloons
 
 export default function Clown() {
   const [balloons, setBalloons] = useState<Balloon[]>([]);
   const [missed, setMissed] = useState(0);
-  const [clownVisible, setClownVisible] = useState(false);
-  const [isDoorVisible, setIsDoorVisible] = useState(false);
-  const { play } = useAudioStore();
+  const [phase, setPhase] = useState<Phase>("intro");
+  const poppedIdsRef = useRef<Set<number>>(new Set());
+  const triggerDanger = useEffectSounds({ effect: "danger" });
+  const triggerClownLaugh = useEffectSounds({ effect: "clown-laugh" });
 
-  // Spawn a new balloon every few seconds
-  // Stop spawning balloons when door is visible
   useEffect(() => {
-    if (clownVisible || isDoorVisible) return;
+    setMissed(0);
+    setBalloons([]);
+  }, []);
+
+  // Spawn balloons only during playing phase
+  useEffect(() => {
+    if (phase !== "playing") return;
+
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
 
     const interval = setInterval(() => {
       const newBalloon: Balloon = {
         id: Date.now(),
-        x: Math.random() * 80 + 10, // 10–90% from left
-        y: Math.random() * 70 + 10, // 10–80% from top
+        x: Math.random() * 80 + 10,
+        y: Math.random() * 70 + 10,
       };
       setBalloons((prev) => [...prev, newBalloon]);
 
-      // Auto-remove balloon after 3 seconds if not clicked
-      setTimeout(() => {
+      // Auto-remove balloon after 1.5 seconds if not clicked
+      const timeout = setTimeout(() => {
         setBalloons((prev) => prev.filter((b) => b.id !== newBalloon.id));
-        setMissed((prev) => {
-          const next = prev + 1;
-          if (next >= MAX_MISSED) {
-            setClownVisible(true);
-          }
-          return next;
-        });
-      }, 3000);
-    }, 2000);
 
-    return () => clearInterval(interval);
-  }, [clownVisible, isDoorVisible]);
+        if (poppedIdsRef.current.has(newBalloon.id)) {
+          poppedIdsRef.current.delete(newBalloon.id);
+        } else {
+          setMissed((prev) => {
+            const next = prev + 1;
+            if (next >= MAX_MISSED) setPhase("clown");
+            return next;
+          });
+        }
+      }, 1500);
+
+      timeouts.push(timeout);
+    }, 1200);
+
+    return () => {
+      clearInterval(interval);
+      timeouts.forEach(clearTimeout);
+    };
+  }, [phase]);
 
   const handleBalloonClick = (id: number): void => {
-    play("danger");
+    triggerDanger();
+    poppedIdsRef.current.add(id);
     setBalloons((prev) => prev.filter((b) => b.id !== id));
   };
 
   const handleClownDone = (): void => {
-    setClownVisible(false);
-    setIsDoorVisible(true);
+    setPhase("done");
   };
 
   // Clown scale based on missed balloons
   const clownScale = 0.1 + (missed / MAX_MISSED) * 0.5;
 
   return (
-    <div className="absolute inset-0 bg-black ">
-      {/* Clown — grows with each missed balloon */}
-      <motion.img
-        src="/assets/images/clown1.png"
-        alt=""
-        className="absolute bottom-1/4 translate-x-1/2 max-w-full max-h-full object-contain md:bottom-0 left-1/2 translate-none"
-        animate={{
-          scale: clownVisible ? 2 : clownScale,
-          opacity: missed > 0 ? 1 : 0,
-          // Slide off screen to the right when door is visible
-          x: isDoorVisible ? "100vw" : "-50%",
-        }}
-        transition={{
-          duration: isDoorVisible ? 1 : clownVisible ? 2 : 0.5,
-          ease: "easeInOut",
-        }}
-        onAnimationComplete={() => {
-          if (clownVisible && !isDoorVisible) {
-            play("clown-laugh");
-            // Show door after clown fills screen
-            setTimeout(handleClownDone, 3000);
-          }
-        }}
-      />
-
-      {/* Balloons */}
+    <div className="absolute inset-0 bg-black">
+      {/* Intro text */}
       <AnimatePresence>
-        {balloons.map((balloon) => (
-          <motion.button
-            key={balloon.id}
-            onClick={() => handleBalloonClick(balloon.id)}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{ left: `${balloon.x}%`, top: `${balloon.y}%` }}
-            className="absolute text-5xl cursor-pointer"
-            aria-label="Pop balloon"
-          >
-            <img
-              src="/assets/images/balloon3.png"
-              alt=""
-              width={80}
-              height={80}
-            />
-          </motion.button>
-        ))}
+        {phase === "intro" && (
+          <IntroText onComplete={() => setPhase("playing")} />
+        )}
       </AnimatePresence>
+      {/* Clown */}
+      {phase !== "intro" && (
+        <>
+          <motion.img
+            src="/assets/images/clown1.png"
+            alt=""
+            className="absolute bottom-50 left-1/2 max-w-full max-h-full object-contain md:bottom-0"
+            initial={{ opacity: 0, scale: 0.1, x: "-50%" }}
+            animate={{
+              scale: phase === "clown" ? 2 : clownScale,
+              opacity: missed === 0 ? 0 : 1,
+              // Slide off screen to the right when door is visible
+              x: phase === "done" ? "100vw" : "-50%",
+            }}
+            transition={{
+              duration: phase === "clown" ? 2 : 0.5,
+              ease: "easeInOut",
+            }}
+            onAnimationComplete={() => {
+              if (phase === "clown") {
+                triggerClownLaugh();
+                // Show door after clown fills screen
+                setTimeout(handleClownDone, 3000);
+              }
+            }}
+          />
 
-      {isDoorVisible && <DoorTransition buttonText="Escape..." />}
+          {/* Balloons */}
+          <AnimatePresence>
+            {phase === "playing" &&
+              balloons.map((balloon) => (
+                <motion.button
+                  key={balloon.id}
+                  onClick={() => handleBalloonClick(balloon.id)}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ left: `${balloon.x}%`, top: `${balloon.y}%` }}
+                  className="absolute cursor-pointer"
+                  aria-label="Pop balloon"
+                >
+                  <img
+                    src="/assets/images/balloon3.png"
+                    alt=""
+                    width={80}
+                    height={80}
+                  />
+                </motion.button>
+              ))}
+          </AnimatePresence>
+
+          {/* Door */}
+          {phase === "done" && <DoorTransition buttonText="Escape..." />}
+        </>
+      )}
     </div>
   );
 }

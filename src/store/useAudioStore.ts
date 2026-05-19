@@ -49,11 +49,11 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   play: (soundId) => {
-    const { instances, isMuted, load } = get();
+    const { instances, load } = get();
     if (!instances[soundId]) load(soundId);
 
     const instance = get().instances[soundId];
-    if (!instance || isMuted) return;
+    if (!instance) return;
 
     const id = instance.howl.play();
     set((state) => ({
@@ -67,11 +67,11 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   },
 
   fadeIn: (soundId, duration = 1000) => {
-    const { instances, load, isMuted } = get();
+    const { instances, load } = get();
     if (!instances[soundId]) load(soundId);
 
     const instance = get().instances[soundId];
-    if (!instance || isMuted) return;
+    if (!instance) return;
 
     instance.howl.volume(0);
     const id = instance.howl.play();

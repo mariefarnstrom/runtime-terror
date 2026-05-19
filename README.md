@@ -107,7 +107,7 @@ Create a `.env.local` file based on `.env.example`:
 ```
 NEXT_PUBLIC_TIVOLI_MODE=false       # Set to true when connected to the main tivoli
 NEXT_PUBLIC_ENTRY_PRICE=3           # Entry fee in euros
-NEXT_PUBLIC_API_KEY=                # Your attraction API key — get it from the centralbank after registering your amusement
+API_KEY=                            # Your attraction API key — get it from the centralbank after registering your amusement
 ```
 
 ## Centralbank Integration

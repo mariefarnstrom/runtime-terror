@@ -47,7 +47,7 @@ export default function ZombieHand({ triggerOnMount = false, onEmergeComplete }:
   }, [triggerOnMount, startAnimation]);
 
   return (
-    <div className="absolute top-[52%] left-[14%] z-30 w-32.5 h-32.5 overflow-hidden pointer-events-none">
+    <div className="absolute top-[52%] left-[14%] z-30 w-32.5 h-32.5 overflow-hidden pointer-events-none md:left-[25%] md:top-[50%] md:w-40 md:h-40">
       <motion.div
         initial="hidden"
         animate={controls}
@@ -60,7 +60,7 @@ export default function ZombieHand({ triggerOnMount = false, onEmergeComplete }:
           width={130}
           height={130}
           draggable={false}
-          className="h-full w-full object-contain skew-1"
+          className="h-full w-full object-contain skew-1 md:w-40 md:h-40"
         />
       </motion.div>
     </div>

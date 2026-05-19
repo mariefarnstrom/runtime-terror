@@ -6,7 +6,7 @@ import DoorTransition from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 
 type Balloon = {
-  id: number;
+  id: string;
   x: number;
   y: number;
 };
@@ -50,9 +50,10 @@ export default function Clown() {
   const [balloons, setBalloons] = useState<Balloon[]>([]);
   const [missed, setMissed] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
-  const poppedIdsRef = useRef<Set<number>>(new Set());
+  const poppedIdsRef = useRef<Set<string>>(new Set());
   const triggerDanger = useEffectSounds({ effect: "danger" });
   const triggerClownLaugh = useEffectSounds({ effect: "clown-laugh" });
+  const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
     setMissed(0);
@@ -67,7 +68,7 @@ export default function Clown() {
 
     const interval = setInterval(() => {
       const newBalloon: Balloon = {
-        id: Date.now(),
+        id: crypto.randomUUID(),
         x: Math.random() * 80 + 10,
         y: Math.random() * 70 + 10,
       };
@@ -97,7 +98,7 @@ export default function Clown() {
     };
   }, [phase]);
 
-  const handleBalloonClick = (id: number): void => {
+  const handleBalloonClick = (id: string): void => {
     triggerDanger();
     poppedIdsRef.current.add(id);
     setBalloons((prev) => prev.filter((b) => b.id !== id));
@@ -109,6 +110,12 @@ export default function Clown() {
 
   // Clown scale based on missed balloons
   const clownScale = 0.1 + (missed / MAX_MISSED) * 0.5;
+
+  useEffect(() => {
+    return () => {
+      pendingTimeoutsRef.current.forEach(clearTimeout);
+    };
+  }, []);
 
   return (
     <div className="absolute inset-0 bg-black">
@@ -140,7 +147,8 @@ export default function Clown() {
               if (phase === "clown") {
                 triggerClownLaugh();
                 // Show door after clown fills screen
-                setTimeout(handleClownDone, 3000);
+                const t = setTimeout(handleClownDone, 3000);
+                pendingTimeoutsRef.current.push(t);
               }
             }}
           />

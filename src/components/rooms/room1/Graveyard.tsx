@@ -20,8 +20,8 @@ export default function Graveyard() {
       <DoorTransition
         buttonText="Enter the house"
         doorImage="/assets/images/wooden-door.png"
-        positionClass="bottom-90 right-10"
-        sizeClass="h-40 w-24"
+        positionClass="bottom-90 right-[15%] md:bottom-75 md:right-[20%]"
+        sizeClass="h-40 w-24 md:h-56 md:w-30"
       />
       <ZombieHand 
       triggerOnMount={true}

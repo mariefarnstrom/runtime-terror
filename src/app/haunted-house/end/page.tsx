@@ -78,7 +78,7 @@ export default function EndPage() {
           </h2>
           <Image
             src={stamp.image_url}
-            alt={stamp.stamptype.animal}
+            alt={`${stamp.stamptype.metal ? `${stamp.stamptype.metal} ` : ""}${stamp.stamptype.animal}`}
             width={200}
             height={200}
           />

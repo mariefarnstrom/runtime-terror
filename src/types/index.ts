@@ -7,9 +7,23 @@ export type Transaction = {
 };
 
 export type PaymentResponse = {
-  success: boolean
-  error?: PaymentError
-}
+  success: boolean;
+  data: {
+    id: number;
+    stamp: {
+      id: number;
+      image_url: string;
+      stamptype: {
+        animal: string;
+        image_url: string;
+      };
+    };
+  };
+  error?: {
+    message: string;
+    status?: number;
+  };
+};
 
 export interface PaymentResult {
   success: boolean

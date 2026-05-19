@@ -12,14 +12,13 @@ const ROOMS: Record<RoomId, ComponentType> = {
   graveyard: Graveyard,
   dolls: Dolls,
   spiders: Spiders,
-  clown: Clown
+  clown: Clown,
 };
-
 
 export default function HauntedHousePage() {
   const router = useRouter();
-  const currentRoom = useGameStore(s => s.currentRoom);
-  const isComplete = useGameStore(s => s.isComplete);
+  const currentRoom = useGameStore((s) => s.currentRoom);
+  const isComplete = useGameStore((s) => s.isComplete);
   const [mounted, setMounted] = useState(false);
 
   // Reset if coming back from end page
@@ -42,31 +41,12 @@ export default function HauntedHousePage() {
 
   if (!mounted) return null;
 
+  const CurrentRoom = ROOMS[currentRoom];
+
+  // key={currentRoom} forces React to unmount and remount on room change
   return (
     <div>
-      <div
-        className={currentRoom === "graveyard" ? "block" : "hidden paused"}
-      >
-        <Graveyard />
-      </div>
-
-      <div
-        className={currentRoom === "dolls" ? "block" : "hidden paused"}
-      >
-        <Dolls />
-      </div>
-
-      <div
-        className={currentRoom === "spiders" ? "block" : "hidden paused"}
-      >
-        <Spiders />
-      </div>
-
-      <div
-        className={currentRoom === "clown" ? "block" : "hidden paused"}
-      >
-        <Clown />
-      </div>
+      <CurrentRoom key={currentRoom} />
     </div>
   );
 }

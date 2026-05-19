@@ -7,7 +7,7 @@ export async function processPayment(
   payload: Transaction
 ): Promise<ApiResult<PaymentResult>> {
   try {
-    const res = await fetch('https://your-provider.com/charge', {
+    const res = await fetch('https://api-main-7fe2.up.railway.app/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

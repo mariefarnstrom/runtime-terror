@@ -4,6 +4,7 @@ import DoorTransition from "@/components/shared/DoorTransition";
 import ZombieHand from "@/components/rooms/room1/ZombieHand";
 import { useState } from "react";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
+import { MyLottieComponent } from "@/components/rooms/room1/Bird";
 
 export default function Graveyard() {
   const [doorOpen, setDoorOpen] = useState(false);

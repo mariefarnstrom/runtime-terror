@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import DoorTransition from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 import { useGameStore } from "@/store/useGameStore";
+import { getRandomNumber } from "@/lib/randomNumber";
 
 type Balloon = {
   id: string;
@@ -58,6 +59,8 @@ export default function Clown() {
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const router = useRouter();
   const completeGame = useGameStore((s) => s.completeGame);
+  
+  const rnd = getRandomNumber();
 
   useEffect(() => {
     setMissed(0);
@@ -73,8 +76,8 @@ export default function Clown() {
     const interval = setInterval(() => {
       const newBalloon: Balloon = {
         id: crypto.randomUUID(),
-        x: Math.random() * 80 + 10,
-        y: Math.random() * 70 + 10,
+        x: rnd * 80 + 10,
+        y: rnd * 70 + 10,
       };
       setBalloons((prev) => [...prev, newBalloon]);
 

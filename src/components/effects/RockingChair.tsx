@@ -30,6 +30,7 @@ export default function RockingChair({
 }: RockingChairProps) {
   const [isTalking, setIsTalking] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
+  const jumpscareTriggeredRef = useRef(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
   const { play } = useAudioStore();
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -48,7 +49,7 @@ export default function RockingChair({
   }, []);
 
   const handleClick = (): void => {
-    if (isTalking || isJumpscare) return;
+    if (isTalking || isJumpscare || jumpscareTriggeredRef.current) return; // Block clicks after jumpscare
 
     // Force jumpscare after 6 phrases
     const forceJumpscare = totalTalks >= 6;
@@ -67,6 +68,7 @@ export default function RockingChair({
       totalTalks > 0 && (forceJumpscare || Math.random() < jumpscareChance);
 
     if (willJumpscare) {
+      jumpscareTriggeredRef.current = true; // Mark as triggered
       play("loud-jumpscare");
       setIsJumpscare(true);
 
@@ -89,8 +91,8 @@ export default function RockingChair({
       availableIndexes.length > 0
         ? availableIndexes
         : phrases
-            .map((_, index) => index)
-            .filter((index) => phraseCounts[index] < 2);
+          .map((_, index) => index)
+          .filter((index) => phraseCounts[index] < 2);
 
     if (validIndexes.length === 0) {
       return;
@@ -174,13 +176,14 @@ export default function RockingChair({
         />
 
         {/* Click prompt */}
-        <motion.p
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="text-center text-grey text-xs font-fell tracking-widest mt-2"
-        >
-          Click me...
-        </motion.p>
+        {!jumpscareTriggeredRef.current && (
+          <motion.p
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="text-center text-grey text-xs font-fell tracking-widest mt-2"
+          >
+            Click me...
+          </motion.p>)}
       </motion.button>
     </>
   );
